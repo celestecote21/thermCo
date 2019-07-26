@@ -6,70 +6,132 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".defineT">
-
-    <TextView
-            android:text="Lundi"
-            android:layout_width="100dp"
+    <EditText
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/lundiTxt" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/mardiTxt" android:textAlignment="center"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.0" android:textSize="24sp"/>
-    <TextView
-            android:text="Mardi"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content" android:id="@+id/mardiTxt"
-            app:layout_constraintStart_toStartOf="@+id/lundiTxt"
-            app:layout_constraintEnd_toEndOf="@+id/lundiTxt" app:layout_constraintTop_toBottomOf="@+id/lundiTxt"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintBottom_toTopOf="@+id/mercrediTxt"
-            android:textAlignment="center" android:textSize="24sp"/>
-    <TextView
-            android:text="Mercredi"
-            android:layout_width="100dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:hint="degrés"
+            app:layout_constraintStart_toStartOf="@+id/editText5" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="@+id/editText5" app:layout_constraintTop_toBottomOf="@+id/editText5"
+            app:layout_constraintBottom_toTopOf="@+id/sendBtn"/>
+    <EditText
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/mercrediTxt"
-            app:layout_constraintStart_toStartOf="@+id/mardiTxt" app:layout_constraintEnd_toEndOf="@+id/mardiTxt"
-            app:layout_constraintTop_toBottomOf="@+id/mardiTxt" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintBottom_toTopOf="@+id/jeudiTxt" android:textAlignment="center" android:textSize="24sp"/>
-    <TextView
-            android:text="Jeudi"
-            android:layout_width="100dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText4"
+            android:hint="heure"
+            app:layout_constraintStart_toStartOf="@+id/scrollView4"
+            app:layout_constraintEnd_toEndOf="@+id/scrollView4" app:layout_constraintTop_toBottomOf="@+id/scrollView4"
+            app:layout_constraintBottom_toTopOf="@+id/editText5" app:layout_constraintVertical_bias="0.51"/>
+    <Button
+            android:text="@string/menu_send"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/jeudiTxt"
-            app:layout_constraintStart_toStartOf="@+id/mercrediTxt" app:layout_constraintEnd_toEndOf="@+id/mercrediTxt"
-            app:layout_constraintTop_toBottomOf="@+id/mercrediTxt" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintBottom_toTopOf="@+id/vendrediTxt" android:textAlignment="center"
-            android:textSize="24sp"/>
-    <TextView
-            android:text="Vendredi"
-            android:layout_width="100dp"
+            android:id="@+id/sendBtn"
+            app:layout_constraintStart_toStartOf="@+id/editText" app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintEnd_toEndOf="@+id/editText" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText"/>
+    <EditText
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/vendrediTxt"
-            app:layout_constraintStart_toStartOf="@+id/jeudiTxt" app:layout_constraintEnd_toEndOf="@+id/jeudiTxt"
-            app:layout_constraintTop_toBottomOf="@+id/jeudiTxt" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintBottom_toTopOf="@+id/samediTxt" android:textAlignment="center"
-            android:textSize="24sp"/>
-    <TextView
-            android:text="Samedi"
-            android:layout_width="100dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText5"
+            android:hint="duree"
+            app:layout_constraintStart_toStartOf="@+id/editText4" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="@+id/editText4" app:layout_constraintTop_toBottomOf="@+id/editText4"
+            app:layout_constraintBottom_toTopOf="@+id/editText"/>
+     <ScrollView
+            android:layout_width="395dp"
+            android:layout_height="199dp"
+            android:id="@+id/scrollView4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical">
+        <ToggleButton
+                android:id="@+id/lundi_btn"
+                android:text="@string/lundi"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textOff="@string/lundi"
+                android:textOn="@string/lundi"
+                android:textAllCaps="false"
+                android:background="@drawable/button_toggle"
+                android:checked="false"
+        />
+        <ToggleButton
+                android:id="@+id/mardi_btn"
+                android:text="@string/mardi"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textOff="@string/mardi"
+                android:textOn="@string/mardi"
+                android:textAllCaps="false"
+                android:background="@drawable/button_toggle"
+                android:checked="false"
+        /><ToggleButton
+            android:id="@+id/mercredi_btn"
+            android:text="@string/mercredi"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/samediTxt"
-            app:layout_constraintStart_toStartOf="@+id/vendrediTxt" app:layout_constraintEnd_toEndOf="@+id/vendrediTxt"
-            app:layout_constraintTop_toBottomOf="@+id/vendrediTxt" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintBottom_toTopOf="@+id/dimancheTxt" android:textAlignment="center"
-            android:textSize="24sp"/>
-    <TextView
-            android:text="Dimanche"
-            android:layout_width="100dp"
+            android:textOff="@string/mercredi"
+            android:textOn="@string/mercredi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+    /><ToggleButton
+            android:id="@+id/jeudi_btn"
+            android:text="@string/jeudi"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/dimancheTxt"
-            app:layout_constraintStart_toStartOf="@+id/samediTxt" app:layout_constraintEnd_toEndOf="@+id/samediTxt"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/samediTxt"
-            app:layout_constraintHorizontal_bias="0.5" android:textAlignment="center" android:textSize="22sp"/>
-    <ToggleButton
-            android:text="ToggleButton"
-            android:layout_width="60dp"
-            android:layout_height="30dp" tools:layout_editor_absoluteY="65dp"
-            tools:layout_editor_absoluteX="144dp" android:id="@+id/toggleButton" android:textSize="8sp"/>
+            android:textOff="@string/jeudi"
+            android:textOn="@string/jeudi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+    /><ToggleButton
+            android:id="@+id/vendredi_btn"
+            android:text="@string/vendredi"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textOff="@string/vendredi"
+            android:textOn="@string/vendredi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+    /><ToggleButton
+            android:id="@+id/samedi_btn"
+            android:text="@string/samedi"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textOff="@string/samedi"
+            android:textOn="@string/samedi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+    /><ToggleButton
+            android:id="@+id/dimanche_btn"
+            android:text="@string/dimanche"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textOff="@string/dimanche"
+            android:textOn="@string/dimanche"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+    />
+    </LinearLayout>
+</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

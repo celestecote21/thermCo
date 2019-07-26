@@ -30,17 +30,17 @@
             android:text="Geothermie"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:id="@+id/button" app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/geo_main_btn" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" app:layout_constraintBottom_toTopOf="@+id/button2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" app:layout_constraintBottom_toTopOf="@+id/clim_main_btn"
             android:textSize="24sp"/>
     <Button
             android:text="clim"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:id="@+id/button2"
+            android:id="@+id/clim_main_btn"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button" android:textSize="24sp"/>
+            app:layout_constraintTop_toBottomOf="@+id/geo_main_btn" android:textSize="24sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
