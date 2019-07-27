@@ -11,39 +11,39 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/degre_field"
             android:hint="degrés"
-            app:layout_constraintStart_toStartOf="@+id/editText5" app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintEnd_toEndOf="@+id/editText5" app:layout_constraintTop_toBottomOf="@+id/editText5"
+            app:layout_constraintStart_toStartOf="@+id/duree_field" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="@+id/duree_field" app:layout_constraintTop_toBottomOf="@+id/duree_field"
             app:layout_constraintBottom_toTopOf="@+id/sendBtn"/>
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText4"
+            android:id="@+id/hours_field"
             android:hint="heure"
             app:layout_constraintStart_toStartOf="@+id/scrollView4"
             app:layout_constraintEnd_toEndOf="@+id/scrollView4" app:layout_constraintTop_toBottomOf="@+id/scrollView4"
-            app:layout_constraintBottom_toTopOf="@+id/editText5" app:layout_constraintVertical_bias="0.51"/>
+            app:layout_constraintBottom_toTopOf="@+id/duree_field" app:layout_constraintVertical_bias="0.51"/>
     <Button
             android:text="@string/menu_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sendBtn"
-            app:layout_constraintStart_toStartOf="@+id/editText" app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintEnd_toEndOf="@+id/editText" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText"/>
+            app:layout_constraintStart_toStartOf="@+id/degre_field" app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintEnd_toEndOf="@+id/degre_field" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/degre_field"/>
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText5"
+            android:id="@+id/duree_field"
             android:hint="duree"
-            app:layout_constraintStart_toStartOf="@+id/editText4" app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintEnd_toEndOf="@+id/editText4" app:layout_constraintTop_toBottomOf="@+id/editText4"
-            app:layout_constraintBottom_toTopOf="@+id/editText"/>
+            app:layout_constraintStart_toStartOf="@+id/hours_field" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="@+id/hours_field" app:layout_constraintTop_toBottomOf="@+id/hours_field"
+            app:layout_constraintBottom_toTopOf="@+id/degre_field"/>
      <ScrollView
             android:layout_width="395dp"
             android:layout_height="199dp"
@@ -64,7 +64,7 @@
                 android:textAllCaps="false"
                 android:background="@drawable/button_toggle"
                 android:checked="false"
-        />
+                android:onClick="onLundiClicked"/>
         <ToggleButton
                 android:id="@+id/mardi_btn"
                 android:text="@string/mardi"
@@ -76,7 +76,8 @@
                 android:textAllCaps="false"
                 android:background="@drawable/button_toggle"
                 android:checked="false"
-        /><ToggleButton
+                android:onClick="onMardiClicked"/>
+        <ToggleButton
             android:id="@+id/mercredi_btn"
             android:text="@string/mercredi"
             android:textSize="18sp"
@@ -87,6 +88,7 @@
             android:textAllCaps="false"
             android:background="@drawable/button_toggle"
             android:checked="false"
+            android:onClick="onMercrediClicked"
     /><ToggleButton
             android:id="@+id/jeudi_btn"
             android:text="@string/jeudi"
@@ -98,6 +100,7 @@
             android:textAllCaps="false"
             android:background="@drawable/button_toggle"
             android:checked="false"
+            android:onClick="onJeudiClicked"
     /><ToggleButton
             android:id="@+id/vendredi_btn"
             android:text="@string/vendredi"
@@ -109,6 +112,7 @@
             android:textAllCaps="false"
             android:background="@drawable/button_toggle"
             android:checked="false"
+            android:onClick="onVendrediClicked"
     /><ToggleButton
             android:id="@+id/samedi_btn"
             android:text="@string/samedi"
@@ -120,6 +124,7 @@
             android:textAllCaps="false"
             android:background="@drawable/button_toggle"
             android:checked="false"
+            android:onClick="onSamediClicked"
     /><ToggleButton
             android:id="@+id/dimanche_btn"
             android:text="@string/dimanche"
@@ -131,6 +136,7 @@
             android:textAllCaps="false"
             android:background="@drawable/button_toggle"
             android:checked="false"
+            android:onClick="onDimancheClicked"
     />
     </LinearLayout>
 </ScrollView>
