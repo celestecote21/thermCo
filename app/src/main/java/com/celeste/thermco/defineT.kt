@@ -1,12 +1,19 @@
 package com.celeste.thermco
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.celeste.thermco.Utilities.EXTRA_SELECTOR
 import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.activity_define_t.*
+import org.json.JSONObject
+import java.lang.reflect.Method
 
 class defineT : AppCompatActivity() {
 
@@ -29,17 +36,11 @@ class defineT : AppCompatActivity() {
                     degre_field.text.toString().toFloat(),
                     hours_field.text.toString().toInt(),
                     duree_field.text.toString().toInt())
-                println(temporaire.toJSON().toString())
+                //println(temporaire.toJSON().toString())
+                sendToServer(temporaire.toJSON(), this)
             }
 
-
-
-
-
-
         }
-
-
 
     }
 
@@ -98,6 +99,38 @@ class defineT : AppCompatActivity() {
         }else{
             day[6] = true
         }
+
+    }
+
+    fun sendToServer(weekJSONObject: JSONObject, context: Context){
+        val sharedPref = context.getSharedPreferences(getString(R.string.saved_server_key), Context.MODE_PRIVATE) ?: return
+
+        var adresseServer = sharedPref.getString(getString(R.string.saved_server_key), "ca marche pas")
+
+
+        adresseServer += ":300/V1/appData"
+        println(adresseServer)
+        val requestBody =weekJSONObject.toString()
+
+        val registerRequest = object: StringRequest(Method.POST, adresseServer, Response.Listener { responce ->
+            println(responce)
+            //complet(true)
+        },
+            Response.ErrorListener {erreur ->
+                Log.d("ERROR", "couldn't register: $erreur")
+                //complet(false)
+            })
+        {
+            override fun getBodyContentType(): String {
+                return "application/json; charset=utf-8"
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+
+        Volley.newRequestQueue(context).add(registerRequest)
 
     }
 

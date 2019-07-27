@@ -7,7 +7,7 @@ class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Float, 
 
     fun toJSON(): JSONObject{
 
-        var week = Array(7)
+        val week = Array(7)
         {i -> Array(24)
             {j ->
                 //println(i)
@@ -30,7 +30,7 @@ class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Float, 
             }
         }
 
-        var weekStr = Array<String>(7){
+        val weekStr = Array<String>(7){
             i ->
             var str = ""
             for(j in week[i]){
@@ -40,7 +40,7 @@ class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Float, 
         }
 
         println(weekStr[3])
-        var weekJSON = JSONObject()
+        val weekJSON = JSONObject()
 
         weekJSON.put("lundi", weekStr[0])
         weekJSON.put("mardi", weekStr[1])
@@ -50,11 +50,6 @@ class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Float, 
         weekJSON.put("samedi", weekStr[5])
         weekJSON.put("dimanche", weekStr[6])
         weekJSON.put("celeste","celeste")
-
-
-
-
-
 
 
         return weekJSON

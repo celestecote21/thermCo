@@ -1,7 +1,10 @@
 package com.celeste.thermco
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_setting.*
+import org.json.JSONObject
 
 class Setting : AppCompatActivity() {
 
@@ -12,5 +15,16 @@ class Setting : AppCompatActivity() {
         setContentView(R.layout.activity_setting)
 
 
+        save_btn_setting.setOnClickListener {
+            val sharedPref = this.getSharedPreferences(getString(R.string.saved_server_key),Context.MODE_PRIVATE)
+            with (sharedPref.edit()) {
+                putString(getString(R.string.saved_server_key), adress_setting_field.text.toString())
+                apply()
+            }
+        }
+
     }
+
+
+
 }
