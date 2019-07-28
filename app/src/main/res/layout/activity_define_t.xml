@@ -64,6 +64,7 @@
                 android:textAllCaps="false"
                 android:background="@drawable/button_toggle"
                 android:checked="false"
+                android:layout_marginBottom="3dp"
                 android:onClick="onLundiClicked"/>
         <ToggleButton
                 android:id="@+id/mardi_btn"
@@ -76,6 +77,7 @@
                 android:textAllCaps="false"
                 android:background="@drawable/button_toggle"
                 android:checked="false"
+                android:layout_marginBottom="3dp"
                 android:onClick="onMardiClicked"/>
         <ToggleButton
             android:id="@+id/mercredi_btn"
@@ -88,6 +90,8 @@
             android:textAllCaps="false"
             android:background="@drawable/button_toggle"
             android:checked="false"
+            android:layout_marginBottom="3dp"
+
             android:onClick="onMercrediClicked"
     /><ToggleButton
             android:id="@+id/jeudi_btn"
@@ -100,6 +104,8 @@
             android:textAllCaps="false"
             android:background="@drawable/button_toggle"
             android:checked="false"
+            android:layout_marginBottom="3dp"
+
             android:onClick="onJeudiClicked"
     /><ToggleButton
             android:id="@+id/vendredi_btn"
@@ -112,6 +118,8 @@
             android:textAllCaps="false"
             android:background="@drawable/button_toggle"
             android:checked="false"
+            android:layout_marginBottom="3dp"
+
             android:onClick="onVendrediClicked"
     /><ToggleButton
             android:id="@+id/samedi_btn"
@@ -124,6 +132,8 @@
             android:textAllCaps="false"
             android:background="@drawable/button_toggle"
             android:checked="false"
+            android:layout_marginBottom="3dp"
+
             android:onClick="onSamediClicked"
     /><ToggleButton
             android:id="@+id/dimanche_btn"

@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.celeste.thermco.Services.ContactServ.sendToServer
 import com.celeste.thermco.Utilities.EXTRA_SELECTOR
 import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.activity_define_t.*
@@ -37,7 +38,17 @@ class defineT : AppCompatActivity() {
                     hours_field.text.toString().toInt(),
                     duree_field.text.toString().toInt())
                 //println(temporaire.toJSON().toString())
-                sendToServer(temporaire.toJSON(), this)
+                val sharedPref = this.getSharedPreferences(getString(R.string.saved_server_key), Context.MODE_PRIVATE)
+
+                val adresseServer = sharedPref.getString(getString(R.string.saved_server_key), "http://192.168.0.4:300/V1/appData")
+
+                if(adresseServer != null) {
+                    sendToServer(adresseServer, this,temporaire.toJSON() )
+                }else {
+                    println("adresse server non defini")
+                }
+
+
             }
 
         }
@@ -102,37 +113,59 @@ class defineT : AppCompatActivity() {
 
     }
 
-    fun sendToServer(weekJSONObject: JSONObject, context: Context){
-        val sharedPref = context.getSharedPreferences(getString(R.string.saved_server_key), Context.MODE_PRIVATE) ?: return
-
-        var adresseServer = sharedPref.getString(getString(R.string.saved_server_key), "ca marche pas")
+    /*fun sendToServer(weekJSONObject: JSONObject, context: Context,  get: Boolean): String{
 
 
-        adresseServer += ":300/V1/appData"
+        val sharedPref = context.getSharedPreferences(getString(R.string.saved_server_key), Context.MODE_PRIVATE) ?: return "pas ok"
+
+        val adresseServer = sharedPref.getString(getString(R.string.saved_server_key), "http://192.168.0.4:300/V1/appData")
         println(adresseServer)
-        val requestBody =weekJSONObject.toString()
+        var servRes = ""
 
-        val registerRequest = object: StringRequest(Method.POST, adresseServer, Response.Listener { responce ->
-            println(responce)
-            //complet(true)
-        },
-            Response.ErrorListener {erreur ->
-                Log.d("ERROR", "couldn't register: $erreur")
-                //complet(false)
-            })
-        {
-            override fun getBodyContentType(): String {
-                return "application/json; charset=utf-8"
-            }
+        if (get){
 
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
+            val registerRequest = object: StringRequest(Method.GET, adresseServer, Response.Listener { responce ->
+                println(responce)
+                servRes = responce
+                //complet(true)
+            },
+                Response.ErrorListener {erreur ->
+                    Log.d("ERROR", "couldn't register: $erreur")
+                    //complet(false)
+                    servRes = " probleme mais normal"
+                })
+            {}
+            Volley.newRequestQueue(context).add(registerRequest)
+            //return servRes
+        }else{
+            val requestBody = weekJSONObject.toString()
+
+            val registerRequest = object: StringRequest(Method.POST, adresseServer, Response.Listener { responce ->
+                println(responce)
+
+                //complet(true)
+            },
+                Response.ErrorListener {erreur ->
+                    Log.d("ERROR", "couldn't register: $erreur")
+                    //complet(false)
+                })
+            {
+                override fun getBodyContentType(): String {
+                    return "application/json; charset=utf-8"
+                }
+
+                override fun getBody(): ByteArray {
+                    return requestBody.toByteArray()
+                }
             }
+            Volley.newRequestQueue(context).add(registerRequest)
+            //return servRes
         }
 
-        Volley.newRequestQueue(context).add(registerRequest)
 
-    }
+        return servRes
+
+    }*/
 
 
 }
