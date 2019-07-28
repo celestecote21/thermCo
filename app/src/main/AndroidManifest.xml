@@ -17,7 +17,7 @@
     >
         <activity android:name=".Setting">
         </activity>
-        <activity android:name=".defineT">
+        <activity android:name=".DefineT">
         </activity>
         <activity
                 android:name=".MainActivity"

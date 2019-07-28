@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_setting.*
-import org.json.JSONObject
+
 
 class Setting : AppCompatActivity() {
 
@@ -16,7 +16,7 @@ class Setting : AppCompatActivity() {
 
         val sharedPref1 = this.getSharedPreferences(getString(R.string.saved_server_key), Context.MODE_PRIVATE) ?: return
 
-        var adresseServer = sharedPref1.getString(getString(R.string.saved_server_key), "http://192.168.0.4:300/V1/appData")
+        val adresseServer = sharedPref1.getString(getString(R.string.saved_server_key), "http://192.168.0.4:300/V1/appData")
 
         adress_setting_field.setText(adresseServer)
 

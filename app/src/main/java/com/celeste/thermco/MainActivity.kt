@@ -3,10 +3,8 @@ package com.celeste.thermco
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -53,13 +51,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setNavigationItemSelectedListener(this)
 
         geo_main_btn.setOnClickListener {
-            val selectorIntent = Intent(this, defineT::class.java)
+            val selectorIntent = Intent(this, DefineT::class.java)
             selectorIntent.putExtra(EXTRA_SELECTOR, 1)
 
             startActivity(selectorIntent)
         }
         clim_main_btn.setOnClickListener {
-            val selectorIntent = Intent(this, defineT::class.java)
+            val selectorIntent = Intent(this, DefineT::class.java)
             selectorIntent.putExtra(EXTRA_SELECTOR, 2)
 
             startActivity(selectorIntent)
