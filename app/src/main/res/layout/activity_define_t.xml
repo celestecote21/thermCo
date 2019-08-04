@@ -6,6 +6,119 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".DefineT">
+
+    <ToggleButton
+            android:id="@+id/lundi_btn"
+            android:text="@string/lundi"
+            android:textSize="18sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textOff="@string/lundi"
+            android:textOn="@string/lundi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+            android:onClick="onLundiClicked" tools:layout_editor_absoluteY="7dp" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"/>
+    <ToggleButton
+            android:id="@+id/mardi_btn"
+            android:text="@string/mardi"
+            android:textSize="18sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textOff="@string/mardi"
+            android:textOn="@string/mardi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+            android:onClick="onMardiClicked"
+            app:layout_constraintStart_toStartOf="@+id/guideline2" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+    <ToggleButton
+            android:id="@+id/mercredi_btn"
+            android:text="@string/mercredi"
+            android:textSize="18sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textOff="@string/mercredi"
+            android:textOn="@string/mercredi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+
+            android:onClick="onMercrediClicked"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/lundi_btn"/>
+    <ToggleButton
+            android:id="@+id/jeudi_btn"
+            android:text="@string/jeudi"
+            android:textSize="18sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textOff="@string/jeudi"
+            android:textOn="@string/jeudi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+
+            android:onClick="onJeudiClicked"
+            app:layout_constraintStart_toStartOf="@+id/guideline2" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/mardi_btn"/>
+    <ToggleButton
+            android:id="@+id/vendredi_btn"
+            android:text="@string/vendredi"
+            android:textSize="18sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textOff="@string/vendredi"
+            android:textOn="@string/vendredi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+
+            android:onClick="onVendrediClicked"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/mercredi_btn"/>
+    <ToggleButton
+            android:id="@+id/samedi_btn"
+            android:text="@string/samedi"
+            android:textSize="18sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textOff="@string/samedi"
+            android:textOn="@string/samedi"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+
+            android:onClick="onSamediClicked"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/jeudi_btn"/>
+    <ToggleButton
+            android:id="@+id/dimanche_btn"
+            android:text="@string/dimanche"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textOff="@string/dimanche"
+            android:textOn="@string/dimanche"
+            android:textAllCaps="false"
+            android:background="@drawable/button_toggle"
+            android:checked="false"
+            android:onClick="onDimancheClicked"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/samedi_btn" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,8 +136,8 @@
             android:ems="10"
             android:id="@+id/hours_field"
             android:hint="heure"
-            app:layout_constraintStart_toStartOf="@+id/scrollView4"
-            app:layout_constraintEnd_toEndOf="@+id/scrollView4" app:layout_constraintTop_toBottomOf="@+id/scrollView4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@+id/dimanche_btn"
             app:layout_constraintBottom_toTopOf="@+id/duree_field" app:layout_constraintVertical_bias="0.51"/>
     <Button
             android:text="@string/menu_send"
@@ -44,16 +157,15 @@
             app:layout_constraintStart_toStartOf="@+id/hours_field" app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintEnd_toEndOf="@+id/hours_field" app:layout_constraintTop_toBottomOf="@+id/hours_field"
             app:layout_constraintBottom_toTopOf="@+id/degre_field"/>
-     <ScrollView
-            android:layout_width="395dp"
-            android:layout_height="199dp"
-            android:id="@+id/scrollView4"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:orientation="vertical">
-        <ToggleButton
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline2"
+            app:layout_constraintGuide_percent="0.5"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--
+<ToggleButton
                 android:id="@+id/lundi_btn"
                 android:text="@string/lundi"
                 android:textSize="18sp"
@@ -148,6 +260,5 @@
             android:checked="false"
             android:onClick="onDimancheClicked"
     />
-    </LinearLayout>
-</ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+-->
