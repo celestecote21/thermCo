@@ -22,6 +22,9 @@
     <string name="vendredi">Vendredi</string>
     <string name="samedi">Samedi</string>
     <string name="dimanche">Dimanche</string>
+    <string name="duree">durée</string>
+    <string name="heure">heure</string>
+    <string name="degr_s">degrés</string>
 
 
 </resources>
