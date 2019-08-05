@@ -5,6 +5,7 @@ import android.util.Log
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
 import kotlin.system.measureTimeMillis
 
@@ -37,29 +38,22 @@ object  ContactServ{
     }
 
 
-    fun receiveTemperature(adress: String, context: Context): Float{
-        var servRes = ""
-        var temperature: Float?
+    fun receiveTemperature(adress: String, context: Context, complet:(Boolean, Float) -> Unit){
         val registerRequest = object: StringRequest(Method.GET, adress, Response.Listener { responce ->
-            println(responce)
-            servRes = responce
-            //complet(true)
+
+            val temperature = responce.toFloatOrNull()
+            if(temperature != null)
+                complet(true, responce.toFloat())
+            else
+                complet(false, 0.toFloat())
+
         },
             Response.ErrorListener {erreur ->
                 Log.d("ERROR", "couldn't register: $erreur")
-                //complet(false)
-                servRes = " probleme mais normal"
+                complet(false, 0.toFloat())
             })
         {}
         Volley.newRequestQueue(context).add(registerRequest)
-
-        temperature = servRes.toFloatOrNull()
-
-        if(temperature != null){
-            return temperature
-        }else{
-            return 0.toFloat()
-        }
 
 
     }

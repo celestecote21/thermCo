@@ -13,12 +13,15 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.widget.Toast
 import com.celeste.thermco.Services.ContactServ
 import com.celeste.thermco.Utilities.EXTRA_SELECTOR
+import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private var  adresseServer :String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,15 +41,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val sharedPref = this.getSharedPreferences(getString(R.string.saved_server_key), Context.MODE_PRIVATE)
 
-        val adresseServer = sharedPref.getString(getString(R.string.saved_server_key), "http://192.168.0.4:300/V1/appData")
+        adresseServer = sharedPref.getString(getString(R.string.saved_server_key), "http://192.168.0.4:300/V1/appData")
 
         if(adresseServer != null) {
-            temperature = ContactServ.receiveTemperature(adresseServer, this)
+            ContactServ.receiveTemperature(adresseServer!!, this){ ok:Boolean, temp:Float ->
+                if(ok){
+                    temperature_main_txt.text = temp.toString()
+                    if(temp < 10){
+                        layout_de_base_main.setBackgroundColor(Color.BLACK)
+                        geo_main_btn.setTextColor(Color.WHITE)
+                        clim_main_btn.setTextColor(Color.WHITE)
+                        arret_main_btn.setTextColor(Color.WHITE)
+                        temperature_main_txt.setTextColor(Color.WHITE)
+                        ilFait_txt.setTextColor(Color.WHITE)
+                    }else if(temp >= 10 && temp < 23){
+                        layout_de_base_main.setBackgroundColor(Color.parseColor("#FF3673B9"))
+                    }else{
+                        layout_de_base_main.setBackgroundColor(Color.RED)
+                    }
+                }else{
+                    Toast.makeText(this,"serveur pas accessible", Toast.LENGTH_LONG).show()
+
+                    temperature_main_txt.text = 0.toString()
+                    if(temp < 10){
+                        layout_de_base_main.setBackgroundColor(Color.BLACK)
+                        geo_main_btn.setTextColor(Color.WHITE)
+                        clim_main_btn.setTextColor(Color.WHITE)
+                        arret_main_btn.setTextColor(Color.WHITE)
+                        temperature_main_txt.setTextColor(Color.WHITE)
+                        ilFait_txt.setTextColor(Color.WHITE)
+                    }else if(temp >= 10 && temp < 23){
+                        layout_de_base_main.setBackgroundColor(Color.parseColor("#FF3673B9"))
+                    }else{
+                        layout_de_base_main.setBackgroundColor(Color.RED)
+                    }
+                }
+
+            }
+
         }else {
             println("adresse server non defini")
         }
 
-        temperature_main_txt.text = temperature.toString()
+
 
         navView.setNavigationItemSelectedListener(this)
 
@@ -62,23 +99,47 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             startActivity(selectorIntent)
         }
-
-
-        if(temperature < 10){
-            layout_de_base_main.setBackgroundColor(Color.BLACK)
-            geo_main_btn.setTextColor(Color.WHITE)
-            clim_main_btn.setTextColor(Color.WHITE)
-            temperature_main_txt.setTextColor(Color.WHITE)
-            ilFait_txt.setTextColor(Color.WHITE)
-        }else if(temperature >= 10 && temperature < 23){
-            layout_de_base_main.setBackgroundColor(Color.parseColor("#FF3673B9"))
-        }else{
-            layout_de_base_main.setBackgroundColor(Color.RED)
+        arret_main_btn.setOnClickListener {
+            val day = Array(7){ i -> false}
+            val temporaire = Chauffage(1, day,0,0,0)
+            if(adresseServer != null)
+                ContactServ.sendToServer(adresseServer!!, this, temporaire.toJSON())
+            else
+                Toast.makeText(this,"adresse du serveur a definir", Toast.LENGTH_LONG).show()
         }
 
 
 
 
+
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(adresseServer != null) {
+            ContactServ.receiveTemperature(adresseServer!!, this){ ok:Boolean, temp:Float ->
+                if(ok){
+                    temperature_main_txt.text = temp.toString()
+                    if(temp < 10){
+                        layout_de_base_main.setBackgroundColor(Color.BLACK)
+                        geo_main_btn.setTextColor(Color.WHITE)
+                        clim_main_btn.setTextColor(Color.WHITE)
+                        temperature_main_txt.setTextColor(Color.WHITE)
+                        ilFait_txt.setTextColor(Color.WHITE)
+                    }else if(temp >= 10 && temp < 23){
+                        layout_de_base_main.setBackgroundColor(Color.parseColor("#FF3673B9"))
+                    }else{
+                        layout_de_base_main.setBackgroundColor(Color.RED)
+                    }
+                }
+
+            }
+
+        }else {
+            println("adresse server non defini")
+        }
     }
 
     override fun onBackPressed() {

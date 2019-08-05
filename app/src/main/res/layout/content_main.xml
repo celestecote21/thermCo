@@ -32,20 +32,32 @@
             android:layout_height="50dp"
             android:background="@drawable/shapes_button_normal"
 
-            android:id="@+id/geo_main_btn" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/geo_main_btn"
+            android:textSize="24sp"
             app:layout_constraintTop_toBottomOf="@+id/temperature_main_txt"
-            app:layout_constraintBottom_toTopOf="@+id/clim_main_btn"
-            android:textSize="24sp" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
+            app:layout_constraintBottom_toTopOf="@+id/clim_main_btn" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
     <Button
             android:text="clim"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:id="@+id/clim_main_btn"
             android:background="@drawable/shapes_button_normal"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/geo_main_btn" android:textSize="24sp"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/geo_main_btn"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintBottom_toTopOf="@+id/arret_main_btn"
             android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
+    <Button
+            android:text="ARRET"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/arret_main_btn"
+            app:layout_constraintStart_toStartOf="@+id/clim_main_btn"
+            app:layout_constraintEnd_toEndOf="@+id/clim_main_btn" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clim_main_btn" app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginEnd="8dp" android:layout_marginStart="8dp"
+            android:background="@drawable/shapes_button_normal" android:textSize="24sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

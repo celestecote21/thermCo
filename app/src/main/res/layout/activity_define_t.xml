@@ -25,7 +25,7 @@
     <ToggleButton
             android:id="@+id/mardi_btn"
             android:text="@string/mardi"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textOff="@string/mardi"
@@ -40,7 +40,7 @@
     <ToggleButton
             android:id="@+id/mercredi_btn"
             android:text="@string/mercredi"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textOff="@string/mercredi"
@@ -57,7 +57,7 @@
     <ToggleButton
             android:id="@+id/jeudi_btn"
             android:text="@string/jeudi"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textOff="@string/jeudi"
@@ -73,7 +73,7 @@
     <ToggleButton
             android:id="@+id/vendredi_btn"
             android:text="@string/vendredi"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textOff="@string/vendredi"
@@ -90,7 +90,7 @@
     <ToggleButton
             android:id="@+id/samedi_btn"
             android:text="@string/samedi"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textOff="@string/samedi"
@@ -106,7 +106,7 @@
     <ToggleButton
             android:id="@+id/dimanche_btn"
             android:text="@string/dimanche"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textOff="@string/dimanche"

@@ -29,7 +29,7 @@ class DefineT : AppCompatActivity() {
                 val temporaire = Chauffage(
                     type,
                     day,
-                    degre_field.text.toString().toFloat(),
+                    degre_field.text.toString().toInt(),
                     hours_field.text.toString().toInt(),
                     duree_field.text.toString().toInt())
                 println(temporaire.toJSON().toString())

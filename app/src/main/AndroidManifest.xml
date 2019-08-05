@@ -17,7 +17,8 @@
     >
         <activity android:name=".Setting">
         </activity>
-        <activity android:name=".DefineT">
+        <activity android:name=".DefineT"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".MainActivity"

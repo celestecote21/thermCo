@@ -2,7 +2,7 @@ package com.celeste.thermco.models
 
 import org.json.JSONObject
 
-class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Float, var startTime: Int, var duree: Int){
+class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Int, var startTime: Int, var duree: Int){
 
 
     fun toJSON(): JSONObject{
