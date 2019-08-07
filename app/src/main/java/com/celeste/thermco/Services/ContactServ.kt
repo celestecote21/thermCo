@@ -12,18 +12,18 @@ import kotlin.system.measureTimeMillis
 object  ContactServ{
 
 
-    fun sendToServer(adress: String, context: Context, jsonObject: JSONObject){
+    fun sendToServer(adress: String, context: Context, jsonObject: JSONObject,complet: (Boolean) -> Unit){
         val requestBody = jsonObject.toString()
 
         val registerRequest = object: StringRequest(
             Method.POST, adress, Response.Listener { responce ->
                 println(responce)
 
-                //complet(true)
+                complet(true)
             },
             Response.ErrorListener { erreur ->
                 Log.d("ERROR", "couldn't register: $erreur")
-                //complet(false)
+                complet(false)
             })
         {
             override fun getBodyContentType(): String {

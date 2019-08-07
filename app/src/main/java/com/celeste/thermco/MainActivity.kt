@@ -1,6 +1,7 @@
 package com.celeste.thermco
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.celeste.thermco.Services.ContactServ
 import com.celeste.thermco.Utilities.EXTRA_SELECTOR
 import com.celeste.thermco.models.Chauffage
@@ -59,6 +61,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             startActivity(selectorIntent)
         }
+
+        geo_main_btn.setOnLongClickListener {
+            Toast.makeText(this, "coucou", Toast.LENGTH_SHORT).show()
+            true
+        }
+
         clim_main_btn.setOnClickListener {
             val selectorIntent = Intent(this, DefineT::class.java)
             selectorIntent.putExtra(EXTRA_SELECTOR, 2)
@@ -67,9 +75,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         arret_main_btn.setOnClickListener {
             val day = Array(7){ i -> false}
-            val temporaire = Chauffage(1, day,0,0,0)
+            val temporaire = Chauffage(1, day,0.toFloat(),0,0)
+            val builder = AlertDialog.Builder(this)
             if(adresseServer != null)
-                ContactServ.sendToServer(adresseServer!!, this, temporaire.toJSON())
+                ContactServ.sendToServer(adresseServer!!, this, temporaire.toJSON()){ ok ->
+                    if(ok){
+
+                        builder.setTitle("Envoyer")
+                        builder.setMessage("Les donnees ont bien ete envoye")
+                        builder.setPositiveButton("OK"){dialog, with ->
+
+                        }
+
+
+                    }else{
+                        builder.setTitle("Erreur")
+                        builder.setMessage("Rien ce c'est arrete")
+                        builder.setPositiveButton("OK"){dialog, with ->
+
+                        }
+                    }
+                    val dialog = builder.create()
+                    dialog.show()
+
+                }
             else
                 Toast.makeText(this,"adresse du serveur a definir", Toast.LENGTH_LONG).show()
             Toast.makeText(this,"arret de tout", Toast.LENGTH_LONG).show()
