@@ -1,7 +1,5 @@
 package com.celeste.thermco
 
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -18,15 +16,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.celeste.thermco.Services.ContactServ
 import com.celeste.thermco.Utilities.EXTRA_SELECTOR
+import com.celeste.thermco.Utilities.Pref
 import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var  adresseServer :String? = ""
+
+    var adresseServer :String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val pref = Pref(this)
+
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -41,17 +45,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val sharedPref = this.getSharedPreferences(getString(R.string.saved_server_key), Context.MODE_PRIVATE)
 
-        adresseServer = sharedPref.getString(getString(R.string.saved_server_key), "http://192.168.0.4:300/V1/appData")
+        adresseServer = pref.adresseServeur
 
-        if(adresseServer != null) {
-            ContactServ.receiveTemperature(adresseServer!!, this){ ok:Boolean, temp:Float ->
-                    changementDeTemperature(ok, temp)
-            }
-        }else {
-            println("adresse server non defini")
+
+
+        ContactServ.receiveTemperature(adresseServer, this){ ok:Boolean, temp:Float ->
+                changementDeTemperature(ok, temp)
         }
+
 
         navView.setNavigationItemSelectedListener(this)
 
@@ -77,44 +79,42 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val day = Array(7){ i -> false}
             val temporaire = Chauffage(1, day,0.toFloat(),0,0)
             val builder = AlertDialog.Builder(this)
-            if(adresseServer != null)
-                ContactServ.sendToServer(adresseServer!!, this, temporaire.toJSON()){ ok ->
-                    if(ok){
 
-                        builder.setTitle("Envoyer")
-                        builder.setMessage("Les donnees ont bien ete envoye")
-                        builder.setPositiveButton("OK"){dialog, with ->
+            ContactServ.sendToServer(adresseServer!!, this, temporaire.toJSON()){ ok ->
+                if(ok){
 
-                        }
+                    builder.setTitle("Envoyer")
+                    builder.setMessage("Les donnees ont bien ete envoye")
+                    builder.setPositiveButton("OK"){dialog, with ->
 
-
-                    }else{
-                        builder.setTitle("Erreur")
-                        builder.setMessage("Rien ce c'est arrete")
-                        builder.setPositiveButton("OK"){dialog, with ->
-
-                        }
                     }
-                    val dialog = builder.create()
-                    dialog.show()
 
+
+                }else{
+                    builder.setTitle("Erreur")
+                    builder.setMessage("Rien ce c'est arrete")
+                    builder.setPositiveButton("OK"){dialog, with ->
+
+                    }
                 }
-            else
-                Toast.makeText(this,"adresse du serveur a definir", Toast.LENGTH_LONG).show()
+                val dialog = builder.create()
+                dialog.show()
+
+            }
+
             Toast.makeText(this,"arret de tout", Toast.LENGTH_LONG).show()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if(adresseServer != null) {
-            ContactServ.receiveTemperature(adresseServer!!, this){ ok:Boolean, temp:Float ->
-                changementDeTemperature(ok, temp)
-            }
 
-        }else {
-            println("adresse server non defini")
+        ContactServ.receiveTemperature(adresseServer, this) { ok: Boolean, temp: Float ->
+            changementDeTemperature(ok, temp)
         }
+
+
+
     }
 
     override fun onBackPressed() {

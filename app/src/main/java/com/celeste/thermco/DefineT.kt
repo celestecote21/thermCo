@@ -8,17 +8,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.celeste.thermco.Services.ContactServ.sendToServer
 import com.celeste.thermco.Utilities.EXTRA_SELECTOR
+import com.celeste.thermco.Utilities.Pref
 import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.activity_define_t.*
 
 
 class DefineT : AppCompatActivity() {
 
-
+    var adresseServer:String = ""
     private var type = 0
     private var day= Array(7){ i -> false}
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val pref = Pref(this)
+
         setContentView(R.layout.activity_define_t)
         type = intent.getIntExtra(EXTRA_SELECTOR, 0)
 
@@ -34,56 +40,57 @@ class DefineT : AppCompatActivity() {
                     hours_field.text.toString().toInt(),
                     duree_field.text.toString().toInt())
                 println(temporaire.toJSON().toString())
-                val sharedPref = this.getSharedPreferences(getString(R.string.saved_server_key), Context.MODE_PRIVATE)
 
-                val adresseServer = sharedPref.getString(getString(R.string.saved_server_key), "http://192.168.0.4:300/V1/appData")
+
+
+
+                adresseServer = pref.adresseServeur
+
                 val builder = AlertDialog.Builder(this)
 
-                if(adresseServer != null) {
-                    sendToServer(adresseServer, this,temporaire.toJSON()){ok ->
-                        if(ok){
 
-                            builder.setTitle("Envoyer")
-                            builder.setMessage("Les donnees ont bien ete envoye")
-                            builder.setPositiveButton("OK"){dialog, with ->
+                sendToServer(adresseServer, this,temporaire.toJSON()){ok ->
+                    if(ok){
 
-                            }
+                        builder.setTitle("Envoyer")
+                        builder.setMessage("Les donnees ont bien ete envoye")
+                        builder.setPositiveButton("OK"){dialog, with ->
 
-
-                        }else {
-                            builder.setTitle("Erreur")
-                            builder.setMessage("Rien n'est envoyer")
-                            builder.setPositiveButton("ressayer") { dialog, with ->
-                                sendToServer(adresseServer, this,temporaire.toJSON()){ok ->
-                                    if(ok){
-
-                                        builder.setTitle("Envoyer")
-                                        builder.setMessage("Les donnees ont bien ete envoye")
-                                        builder.setPositiveButton("OK"){dialog, with ->
-
-                                        }
+                        }
 
 
-                                    }else {
-                                        builder.setTitle("Inaccessible")
-                                        builder.setMessage("Rien n'est envoyer")
-                                        builder.setPositiveButton("OK") { dialog, with ->
+                    }else {
+                        builder.setTitle("Erreur")
+                        builder.setMessage("Rien n'est envoyer")
+                        builder.setPositiveButton("ressayer") { dialog, with ->
+                            sendToServer(adresseServer, this,temporaire.toJSON()){ok ->
+                                if(ok){
 
-                                        }
+                                    builder.setTitle("Envoyer")
+                                    builder.setMessage("Les donnees ont bien ete envoye")
+                                    builder.setPositiveButton("OK"){dialog, with ->
+
                                     }
-                                    val dialog = builder.create()
-                                    dialog.show()
 
+
+                                }else {
+                                    builder.setTitle("Inaccessible")
+                                    builder.setMessage("Rien n'est envoyer")
+                                    builder.setPositiveButton("OK") { dialog, with ->
+
+                                    }
                                 }
+                                val dialog = builder.create()
+                                dialog.show()
+
                             }
                         }
-                        val dialog = builder.create()
-                        dialog.show()
-
                     }
-                }else {
-                    println("adresse server non defini")
+                    val dialog = builder.create()
+                    dialog.show()
+
                 }
+
 
 
             }
