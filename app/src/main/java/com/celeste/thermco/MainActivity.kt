@@ -19,6 +19,9 @@ import com.celeste.thermco.Utilities.EXTRA_SELECTOR
 import com.celeste.thermco.Utilities.Pref
 import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.content_main.*
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -65,7 +68,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         geo_main_btn.setOnLongClickListener {
-            Toast.makeText(this, "coucou", Toast.LENGTH_SHORT).show()
+            val date = LocalDate.now()
+            val dow = date.dayOfWeek
+
+            val day = Array(7){ i ->
+                //true
+                dow.value == i
+            }
+
+            val temporaire = Chauffage(1, day, pref.last_geo_temp ,10,3)
+            val builder = AlertDialog.Builder(this)
+
+            ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
+                if(ok){
+                    println(temporaire.toJSON())
+                    Toast.makeText(this, "chauffage activer pour 2h", Toast.LENGTH_SHORT).show()
+
+                }else{
+                    Toast.makeText(this, "probleme", Toast.LENGTH_SHORT).show()
+                }
+
+
+            }
             true
         }
 
@@ -80,7 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val temporaire = Chauffage(1, day,0.toFloat(),0,0)
             val builder = AlertDialog.Builder(this)
 
-            ContactServ.sendToServer(adresseServer!!, this, temporaire.toJSON()){ ok ->
+            ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
                 if(ok){
 
                     builder.setTitle("Envoyer")
