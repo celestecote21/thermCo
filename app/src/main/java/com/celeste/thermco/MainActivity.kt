@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     var adresseServer :String = ""
-
+    val calendar = GregorianCalendar()
+    var hour = calendar.get(Calendar.HOUR)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -36,8 +37,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val pref = Pref(this)
 
-        val calendar = GregorianCalendar()
-        var hour =calendar.get(Calendar.HOUR)
+
 
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             val day = Array(7){ i ->
                 //true
-                dow.value == i
+                dow.value - 1 == i
             }
 
             val temporaire = Chauffage(1, day, pref.last_geo_temp ,hour,2)
@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     }
                 }
-
+                builder.create().show()
 
             }
             true
@@ -113,6 +113,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             startActivity(selectorIntent)
         }
+
+
+        clim_main_btn.setOnLongClickListener {
+            val date = LocalDate.now()
+            val dow = date.dayOfWeek
+
+
+            val day = Array(7){ i ->
+                //true
+                dow.value - 1 == i
+            }
+
+            val temporaire = Chauffage(2, day, pref.last_clim_temp ,hour,2)
+            val builder = AlertDialog.Builder(this)
+
+            ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
+                if(ok){
+                    builder.setTitle("chauffage mis")
+                    builder.setMessage("la geothermie est mise a ${pref.last_clim_temp} 2h")
+                    builder.setPositiveButton("OK"){dialog, with ->
+
+                    }
+
+
+                }else{
+                    println(temporaire.toJSON())
+                    builder.setTitle("Erreur")
+                    builder.setMessage("le serveur n'est pas accessible")
+                    builder.setPositiveButton("OK"){dialog, with ->
+
+                    }
+                }
+                builder.create().show()
+
+            }
+            true
+        }
+
+
         arret_main_btn.setOnClickListener {
             val day = Array(7){ i -> false}
             val temporaire = Chauffage(1, day,0.toFloat(),0,0)
@@ -150,6 +189,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ContactServ.receiveTemperature(adresseServer, this) { ok: Boolean, temp: Float ->
             changementDeTemperature(ok, temp)
         }
+        hour = calendar.get(Calendar.HOUR)
 
 
 

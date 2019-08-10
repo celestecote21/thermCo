@@ -2,7 +2,9 @@ package com.celeste.thermco.Services
 
 import android.content.Context
 import android.util.Log
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Response
+import com.android.volley.RetryPolicy
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.content_main.*
@@ -34,6 +36,9 @@ object  ContactServ{
                 return requestBody.toByteArray()
             }
         }
+        registerRequest.setRetryPolicy(DefaultRetryPolicy(100,
+            2,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
         Volley.newRequestQueue(context).add(registerRequest)
     }
 
@@ -53,6 +58,9 @@ object  ContactServ{
                 complet(false, 0.toFloat())
             })
         {}
+        registerRequest.setRetryPolicy(DefaultRetryPolicy(100,
+            2,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
         Volley.newRequestQueue(context).add(registerRequest)
 
 

@@ -42,6 +42,10 @@ class DefineT : AppCompatActivity() {
                     duree_field.text.toString().toInt())
                 println(temporaire.toJSON().toString())
 
+                if(type == 2)
+                    pref.last_clim_temp = degre_field.text.toString().toFloat()
+                else
+                    pref.last_geo_temp = degre_field.text.toString().toFloat()
 
 
 
@@ -49,48 +53,31 @@ class DefineT : AppCompatActivity() {
 
                 val builder = AlertDialog.Builder(this)
 
-
-                sendToServer(adresseServer, this,temporaire.toJSON()){ok ->
-                    if(ok){
+                sendToServer(adresseServer, this,temporaire.toJSON()) { ok ->
+                    if (ok) {
 
                         builder.setTitle("Envoyer")
                         builder.setMessage("Les donnees ont bien ete envoye")
-                        builder.setPositiveButton("OK"){dialog, with ->
+                        builder.setPositiveButton("OK") { dialog, with ->
+
 
                         }
 
 
-                    }else {
+                    } else {
                         builder.setTitle("Erreur")
                         builder.setMessage("Rien n'est envoyer")
                         builder.setPositiveButton("ressayer") { dialog, with ->
-                            sendToServer(adresseServer, this,temporaire.toJSON()){ok ->
-                                if(ok){
 
-                                    builder.setTitle("Envoyer")
-                                    builder.setMessage("Les donnees ont bien ete envoye")
-                                    builder.setPositiveButton("OK"){dialog, with ->
-
-                                    }
-
-
-                                }else {
-                                    builder.setTitle("Inaccessible")
-                                    builder.setMessage("Rien n'est envoyer")
-                                    builder.setPositiveButton("OK") { dialog, with ->
-
-                                    }
-                                }
-                                val dialog = builder.create()
-                                dialog.show()
-
-                            }
                         }
                     }
                     val dialog = builder.create()
                     dialog.show()
 
                 }
+
+
+
 
 
 
