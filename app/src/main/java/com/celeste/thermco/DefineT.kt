@@ -1,6 +1,7 @@
 package com.celeste.thermco
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -95,6 +96,13 @@ class DefineT : AppCompatActivity() {
 
             }
 
+        }
+
+        retour_define_btn.setOnClickListener {
+            val retourIntent = Intent(this, MainActivity::class.java)
+
+
+            startActivity(retourIntent)
         }
 
     }

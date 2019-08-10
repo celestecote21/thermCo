@@ -14,11 +14,13 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
+
     >
         <activity android:name=".Setting">
         </activity>
         <activity android:name=".DefineT"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+                  android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
                 android:name=".MainActivity"
