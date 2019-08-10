@@ -30,9 +30,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
 
         val pref = Pref(this)
+
+        val calendar = GregorianCalendar()
+        var hour =calendar.get(Calendar.HOUR)
 
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -71,21 +76,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val date = LocalDate.now()
             val dow = date.dayOfWeek
 
+
             val day = Array(7){ i ->
                 //true
                 dow.value == i
             }
 
-            val temporaire = Chauffage(1, day, pref.last_geo_temp ,10,3)
+            val temporaire = Chauffage(1, day, pref.last_geo_temp ,hour,2)
             val builder = AlertDialog.Builder(this)
 
             ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
                 if(ok){
-                    println(temporaire.toJSON())
-                    Toast.makeText(this, "chauffage activer pour 2h", Toast.LENGTH_SHORT).show()
+                    builder.setTitle("chauffage mis")
+                    builder.setMessage("la geothermie est mise a ${pref.last_geo_temp} 2h")
+                    builder.setPositiveButton("OK"){dialog, with ->
+
+                    }
+
 
                 }else{
-                    Toast.makeText(this, "probleme", Toast.LENGTH_SHORT).show()
+                    builder.setTitle("Erreur")
+                    builder.setMessage("le serveur n'est pas accessible")
+                    builder.setPositiveButton("OK"){dialog, with ->
+
+                    }
                 }
 
 
