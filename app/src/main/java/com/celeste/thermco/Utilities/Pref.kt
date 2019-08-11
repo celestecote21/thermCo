@@ -27,4 +27,8 @@ class Pref(contex: Context){
     var last_geo_temp: Float
         get() = prefs.getFloat(GEQO_PREF, 24.toFloat())
         set(value) = prefs.edit().putFloat(GEQO_PREF, value).apply()
+
+    var isTheFirstLogging: Boolean
+        get() = prefs.getBoolean(FIRST_LOGIN, true)
+        set(value) = prefs.edit().putBoolean(FIRST_LOGIN, value).apply()
 }

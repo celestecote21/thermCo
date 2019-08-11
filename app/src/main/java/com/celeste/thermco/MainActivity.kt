@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.textclassifier.ConversationActions
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.celeste.thermco.Services.ContactServ
@@ -37,7 +38,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val pref = Pref(this)
 
+        //TODO: quand c'est le premier lancage de l'app mettre une aide et aussi pour un chanlog
 
+        if(pref.isTheFirstLogging){
+            val builderFL = AlertDialog.Builder(this)
+            builderFL.setView(R.layout.first_login_layout)
+            builderFL.setPositiveButton("ok"){ p1, p2 ->
+                pref.isTheFirstLogging = false
+            }
+            builderFL.setNegativeButton("revoir"){p1, p2 ->
+
+            }
+            builderFL.create().show()
+        }
 
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
