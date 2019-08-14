@@ -14,7 +14,7 @@ class Pref(contex: Context){
             if (tmp != null)
                 return tmp
             else
-                return "http://192.168..0.4/rest/endpoint"
+                return "http://192.168.0.4/rest/endpoint"
 
         }
         set(value) = prefs.edit().putString(SERVER_PREF, value).apply()

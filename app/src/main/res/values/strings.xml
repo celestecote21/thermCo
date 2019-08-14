@@ -3,7 +3,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_subtitle">celeste@cote21.fr</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -32,6 +32,7 @@
 Cliquer sur le bouton clim ou geo vous pourrez ainsi programmer les horaires d'activation et la temperature.\n Ne rentrez seulememt l'heure sans les minutes pour les deux premiers fields, pour la temperature il est possible d'entrer un nombre a virgule
 Pour activer rapidement la clim ou le chauffage pour 2 heures il suffit de faire un appui long sur celui que vous voulez. La temperature sera la dernier que vous avez definie"
     </string>
+    <string name="thermco">thermco</string>
 
 
 </resources>

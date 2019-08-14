@@ -30,7 +30,7 @@ class DefineT : AppCompatActivity() {
         type = intent.getIntExtra(EXTRA_SELECTOR, 0)
 
         sendBtn.setOnClickListener {
-            //TODO:faire que les valeur par defaut sont celle de la derniere fois pour les boutona
+
             if(degre_field.text.isEmpty() || hours_field.text.isEmpty() || duree_field.text.isEmpty() ){
                 Toast.makeText(this, "Tout remplir", Toast.LENGTH_LONG).show()
             }else{

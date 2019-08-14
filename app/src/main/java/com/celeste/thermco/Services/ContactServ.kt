@@ -36,9 +36,9 @@ object  ContactServ{
                 return requestBody.toByteArray()
             }
         }
-        registerRequest.setRetryPolicy(DefaultRetryPolicy(100,
+        registerRequest.retryPolicy = DefaultRetryPolicy(100,
             2,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         Volley.newRequestQueue(context).add(registerRequest)
     }
 
@@ -58,9 +58,9 @@ object  ContactServ{
                 complet(false, 0.toFloat())
             })
         {}
-        registerRequest.setRetryPolicy(DefaultRetryPolicy(100,
+        registerRequest.retryPolicy = DefaultRetryPolicy(100,
             2,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         Volley.newRequestQueue(context).add(registerRequest)
 
 

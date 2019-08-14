@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val pref = Pref(this)
 
-        //TODO: quand c'est le premier lancage de l'app mettre une aide et aussi pour un chanlog
+
 
         if(pref.isTheFirstLogging){
             val builderFL = AlertDialog.Builder(this)
