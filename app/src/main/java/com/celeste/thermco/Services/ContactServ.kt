@@ -16,7 +16,7 @@ object  ContactServ{
 
     fun sendToServer(adress: String, context: Context, jsonObject: JSONObject,complet: (Boolean) -> Unit){
         val requestBody = jsonObject.toString()
-
+        println(adress)
         val registerRequest = object: StringRequest(
             Method.POST, adress, Response.Listener { responce ->
                 println(responce)
@@ -36,7 +36,7 @@ object  ContactServ{
                 return requestBody.toByteArray()
             }
         }
-        registerRequest.retryPolicy = DefaultRetryPolicy(100,
+        registerRequest.retryPolicy = DefaultRetryPolicy(500,
             2,
             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         Volley.newRequestQueue(context).add(registerRequest)
@@ -58,7 +58,7 @@ object  ContactServ{
                 complet(false, 0.toFloat())
             })
         {}
-        registerRequest.retryPolicy = DefaultRetryPolicy(100,
+        registerRequest.retryPolicy = DefaultRetryPolicy(500,
             2,
             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         Volley.newRequestQueue(context).add(registerRequest)

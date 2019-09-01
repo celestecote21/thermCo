@@ -19,11 +19,11 @@ class Setting : AppCompatActivity() {
         val pref = Pref(this)
 
 
-        adress_setting_field.setText(pref.adresseServeur)
+        adress_setting_field3.setText(pref.adresseServeur)
 
         save_btn_setting.setOnClickListener {
 
-            pref.adresseServeur = adress_setting_field.text.toString()
+            pref.adresseServeur = adress_setting_field3.text.toString()
 
         }
 

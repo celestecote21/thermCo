@@ -3,6 +3,7 @@ package com.celeste.thermco
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     var adresseServer :String = ""
     val calendar = GregorianCalendar()
-    var hour = calendar.get(Calendar.HOUR)
+    var hour = calendar.get(Calendar.HOUR_OF_DAY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
 
         val pref = Pref(this)
-
+        println(hour)
 
 
         if(pref.isTheFirstLogging){
@@ -96,12 +97,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             val temporaire = Chauffage(1, day, pref.last_geo_temp ,hour,2)
+
             val builder = AlertDialog.Builder(this)
+
 
             ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
                 if(ok){
+
                     builder.setTitle("chauffage mis")
-                    builder.setMessage("la geothermie est mise a ${pref.last_geo_temp} 2h")
+                    builder.setMessage("la geothermie est mise a ${pref.last_geo_temp} degres pour 2h")
                     builder.setPositiveButton("OK"){dialog, with ->
 
                     }
@@ -133,6 +137,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val dow = date.dayOfWeek
 
 
+
             val day = Array(7){ i ->
                 //true
                 dow.value - 1 == i
@@ -143,8 +148,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
                 if(ok){
-                    builder.setTitle("chauffage mis")
-                    builder.setMessage("la geothermie est mise a ${pref.last_clim_temp} 2h")
+                    builder.setTitle("clim mis")
+                    builder.setMessage("la clim est mise a ${pref.last_clim_temp} degres pour 2h")
                     builder.setPositiveButton("OK"){dialog, with ->
 
                     }
@@ -202,7 +207,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ContactServ.receiveTemperature(adresseServer, this) { ok: Boolean, temp: Float ->
             changementDeTemperature(ok, temp)
         }
-        hour = calendar.get(Calendar.HOUR)
+        hour = calendar.get(Calendar.HOUR_OF_DAY)
 
 
 

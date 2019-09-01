@@ -33,6 +33,8 @@ Cliquer sur le bouton clim ou geo vous pourrez ainsi programmer les horaires d'a
 Pour activer rapidement la clim ou le chauffage pour 2 heures il suffit de faire un appui long sur celui que vous voulez. La temperature sera la dernier que vous avez definie"
     </string>
     <string name="thermco">thermco</string>
+    <string name="adress_du_salon">adress du salon</string>
+    <string name="save">save</string>
 
 
 </resources>
