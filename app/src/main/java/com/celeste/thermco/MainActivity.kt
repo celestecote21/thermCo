@@ -21,7 +21,7 @@ import com.celeste.thermco.Utilities.EXTRA_SELECTOR
 import com.celeste.thermco.Utilities.Pref
 import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.content_main.*
-import java.time.LocalDate
+import java.time.*
 import java.time.format.TextStyle
 import java.util.*
 
@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val pref = Pref(this)
         println(hour)
 
+
+        val date = Date()
+        println(date)
+        calendar.time = date
 
         if(pref.isTheFirstLogging){
             val builderFL = AlertDialog.Builder(this)
@@ -78,7 +82,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         navView.setNavigationItemSelectedListener(this)
-
         geo_main_btn.setOnClickListener {
             val selectorIntent = Intent(this, DefineT::class.java)
             selectorIntent.putExtra(EXTRA_SELECTOR, 1)
@@ -87,17 +90,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         geo_main_btn.setOnLongClickListener {
-            val date = LocalDate.now()
-            val dow = date.dayOfWeek
-
+            //val date = LocalDate.now()
+            //val dow = date.dayOfWeek
+            val dow = calendar.get(Calendar.DAY_OF_WEEK)
+            //hour = 4
 
             val day = Array(7){ i ->
                 //true
-                dow.value - 1 == i
+                dow - 2 == i
             }
 
-            val temporaire = Chauffage(1, day, pref.last_geo_temp ,hour,2)
 
+            val temporaire = Chauffage(1, day, pref.last_geo_temp ,hour,2)
+            //println(temporaire.toJSON())
+            //println("date: ${calendar.get(Calendar.DAY_OF_WEEK)}")
+            //println(hour)
             val builder = AlertDialog.Builder(this)
 
 
@@ -133,14 +140,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         clim_main_btn.setOnLongClickListener {
-            val date = LocalDate.now()
-            val dow = date.dayOfWeek
-
+            //val date = LocalDate.now()
+            //val dow = date.dayOfWeek
+            val dow = calendar.get(Calendar.DAY_OF_WEEK)
 
 
             val day = Array(7){ i ->
                 //true
-                dow.value - 1 == i
+                dow - 2 == i
             }
 
             val temporaire = Chauffage(2, day, pref.last_clim_temp ,hour,2)
@@ -233,7 +240,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                val settingIntent = Intent(this, Setting::class.java)
+
+
+                startActivity(settingIntent)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

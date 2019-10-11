@@ -6,13 +6,14 @@ class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Float, 
 
 
     fun toJSON(): JSONObject{
-
+        //println(startTime)
         val week = Array(7)
         {i -> Array(24)
             {j ->
-                //println(i)
+                //println(j)
                 if(day[i] == true){
                     if((j + 1) >= startTime && (j + 1) <= startTime + duree){
+                        println("ca rentre")
                         if(type == 1){
                             "$temperature,"
                         }else if(type == 2){
