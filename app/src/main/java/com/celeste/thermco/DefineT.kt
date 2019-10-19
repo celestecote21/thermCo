@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.celeste.thermco.Services.ContactServ.sendToServer
@@ -12,6 +14,11 @@ import com.celeste.thermco.Utilities.EXTRA_SELECTOR
 import com.celeste.thermco.Utilities.Pref
 import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.activity_define_t.*
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 class DefineT : AppCompatActivity() {
@@ -29,17 +36,64 @@ class DefineT : AppCompatActivity() {
         setContentView(R.layout.activity_define_t)
         type = intent.getIntExtra(EXTRA_SELECTOR, 0)
 
+        if(type == 1){
+            FC_button.isChecked = true
+            FC_button.isClickable = false
+        }else
+            FC_button.isChecked = pref.last_chaleur == 1
+
+        val spinner: Spinner = findViewById(R.id.spinner)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.planets_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner.adapter = adapter
+        }
+
+
+
+        fun getItemSelected(){
+            val allDayArray = resources.getStringArray(R.array.planets_array)
+            var i =  0
+            for(days in allDayArray){
+                if(days ==  spinner.getSelectedItem().toString()){
+                    day[i] = true
+                }
+                i += 1
+            }
+        }
+
+
+
         sendBtn.setOnClickListener {
+            getItemSelected()
+            var chaleur = 1;
+
+            if(FC_button.isChecked){
+               chaleur = 1
+            }else {
+                chaleur = 2
+            }
+            pref.last_chaleur = chaleur
+            if(chaleur == 2 && type == 1){
+                chaleur = 1
+            }
             //TODO:faire que les valeur par defaut sont celle de la derniere fois pour les boutona
             if(degre_field.text.isEmpty() || hours_field.text.isEmpty() || duree_field.text.isEmpty() ){
                 Toast.makeText(this, "Tout remplir", Toast.LENGTH_LONG).show()
             }else{
                 val temporaire = Chauffage(
-                    type,
+                    chaleur,
                     day,
                     degre_field.text.toString().toFloat(),
                     hours_field.text.toString().toInt(),
-                    duree_field.text.toString().toInt())
+                    duree_field.text.toString().toInt(),
+                    type)
                 println(temporaire.toJSON().toString())
 
                 if(type == 2)
@@ -85,6 +139,8 @@ class DefineT : AppCompatActivity() {
 
         }
 
+
+
         retour_define_btn.setOnClickListener {
             val retourIntent = Intent(this, MainActivity::class.java)
 
@@ -94,34 +150,8 @@ class DefineT : AppCompatActivity() {
 
     }
 
-    fun onLundiClicked(view: View){
-        day[0] = !day[0]
 
-
-    }
-    fun onMardiClicked(view: View){
-        day[1] = !day[1]
-    }
-    fun onMercrediClicked(view: View){
-        day[2] = !day[2]
-
-    }
-    fun onJeudiClicked(view: View){
-        day[3] = !day[3]
-
-    }
-    fun onVendrediClicked(view: View){
-        day[4] = !day[4]
-
-    }
-    fun onSamediClicked(view: View){
-        day[5] = !day[5]
-
-    }
-    fun onDimancheClicked(view: View){
-        day[6] = !day[6]
-
-    }
+    
 
 
 }
