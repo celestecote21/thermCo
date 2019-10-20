@@ -31,4 +31,10 @@ class Pref(contex: Context){
     var isTheFirstLogging: Boolean
         get() = prefs.getBoolean(FIRST_LOGIN, true)
         set(value) = prefs.edit().putBoolean(FIRST_LOGIN, value).apply()
+
+    var last_chaleur: Int
+        get() = prefs.getInt(CHALEUR_PREF, 1)
+        set(value: Int) = prefs.edit().putInt(CHALEUR_PREF, value).apply()
+
+
 }

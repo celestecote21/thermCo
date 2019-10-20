@@ -100,11 +100,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dow - 2 == i
             }
 
-
-            val temporaire = Chauffage(1, day, pref.last_geo_temp ,hour,2)
-            //println(temporaire.toJSON())
-            //println("date: ${calendar.get(Calendar.DAY_OF_WEEK)}")
-            //println(hour)
+            val temporaire = Chauffage(pref.last_chaleur, day, pref.last_geo_temp ,hour,2, 1)
             val builder = AlertDialog.Builder(this)
 
 
@@ -150,7 +146,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dow - 2 == i
             }
 
-            val temporaire = Chauffage(2, day, pref.last_clim_temp ,hour,2)
+            val temporaire = Chauffage(pref.last_chaleur, day, pref.last_clim_temp ,hour,2, 2)
             val builder = AlertDialog.Builder(this)
 
             ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
@@ -179,7 +175,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         arret_main_btn.setOnClickListener {
             val day = Array(7){ i -> false}
-            val temporaire = Chauffage(1, day,0.toFloat(),0,0)
+            val temporaire = Chauffage(1, day,0.toFloat(),0,0, 1)
             val builder = AlertDialog.Builder(this)
 
             ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
