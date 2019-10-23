@@ -92,8 +92,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         geo_main_btn.setOnLongClickListener {
             //val date = LocalDate.now()
             //val dow = date.dayOfWeek
-            val dow = calendar.get(Calendar.DAY_OF_WEEK)
-            //hour = 4
+            var dow = calendar.get(Calendar.DAY_OF_WEEK)
+
+            println(dow)
+            if(dow == 1){
+                dow = 8
+            }
 
             val day = Array(7){ i ->
                 //true
@@ -138,8 +142,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         clim_main_btn.setOnLongClickListener {
             //val date = LocalDate.now()
             //val dow = date.dayOfWeek
-            val dow = calendar.get(Calendar.DAY_OF_WEEK)
+            var dow = calendar.get(Calendar.DAY_OF_WEEK)
 
+            println(dow)
+            if(dow == 1){
+                dow = 8
+            }
 
             val day = Array(7){ i ->
                 //true
