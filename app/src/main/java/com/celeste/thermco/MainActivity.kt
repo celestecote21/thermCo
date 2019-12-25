@@ -28,9 +28,9 @@ import java.util.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
-    var adresseServer :String = ""
-    val calendar = GregorianCalendar()
-    var hour = calendar.get(Calendar.HOUR_OF_DAY)
+    private var adresseServer :String = ""
+    private val calendar = GregorianCalendar()
+    private var hour = calendar.get(Calendar.HOUR_OF_DAY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -264,6 +264,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
                 startActivity(settingIntent)
+            }
+            R.id.nav_portail -> {
+                val portailIntent = Intent(this, portailActivity::class.java)
+
+
+                startActivity(portailIntent)
             }
 
         }
