@@ -3,7 +3,6 @@ package com.celeste.thermco
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -13,7 +12,6 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.view.textclassifier.ConversationActions
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.celeste.thermco.Services.ContactServ
@@ -21,8 +19,7 @@ import com.celeste.thermco.Utilities.EXTRA_SELECTOR
 import com.celeste.thermco.Utilities.Pref
 import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.content_main.*
-import java.time.*
-import java.time.format.TextStyle
+import java.lang.Exception
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -104,7 +101,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dow - 2 == i
             }
 
-            val temporaire = Chauffage(pref.last_chaleur, day, pref.last_geo_temp ,hour,2, 1)
+            val temporaire = Chauffage(pref.lastChaleur, day, pref.lastGeoTemp ,hour,2, 1)
             val builder = AlertDialog.Builder(this)
 
 
@@ -112,7 +109,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if(ok){
 
                     builder.setTitle("chauffage mis")
-                    builder.setMessage("la geothermie est mise a ${pref.last_geo_temp} degres pour 2h")
+                    builder.setMessage("la geothermie est mise a ${pref.lastGeoTemp} degres pour 2h")
                     builder.setPositiveButton("OK"){dialog, with ->
 
                     }
@@ -154,13 +151,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dow - 2 == i
             }
 
-            val temporaire = Chauffage(pref.last_chaleur, day, pref.last_clim_temp ,hour,2, 2)
+            val temporaire = Chauffage(pref.lastChaleur, day, pref.lastClimTemp ,hour,2, 2)
             val builder = AlertDialog.Builder(this)
 
             ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
                 if(ok){
                     builder.setTitle("clim mis")
-                    builder.setMessage("la clim est mise a ${pref.last_clim_temp} degres pour 2h")
+                    builder.setMessage("la clim est mise a ${pref.lastClimTemp} degres pour 2h")
                     builder.setPositiveButton("OK"){dialog, with ->
 
                     }
@@ -245,7 +242,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> {
-                val settingIntent = Intent(this, Setting::class.java)
+                val settingIntent = Intent(this, SettingsActivity::class.java)
 
 
                 startActivity(settingIntent)
@@ -260,16 +257,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
 
             R.id.nav_setting -> {
-                val settingIntent = Intent(this, Setting::class.java)
+                val settingIntent = Intent(this, SettingsActivity::class.java)
 
 
                 startActivity(settingIntent)
             }
             R.id.nav_portail -> {
-                val portailIntent = Intent(this, portailActivity::class.java)
+                try{
+                    val portailIntent = Intent(this, portailActivity::class.java)
 
 
-                startActivity(portailIntent)
+                    startActivity(portailIntent)}
+                catch (ex: Exception){
+                    Toast.makeText(this, "merci de renseigner un bon mot de passe et user pour le broker", Toast.LENGTH_LONG).show()
+                }
             }
 
         }
