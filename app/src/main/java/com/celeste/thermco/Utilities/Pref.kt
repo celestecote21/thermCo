@@ -61,6 +61,28 @@ class Pref(contex: Context){
         }
         set(value) = prefs.edit().putString("topic_portail_pref", value).apply()
 
+    var topicVoletUp: String
+        get(){
+            val temp = prefs.getString("topic_volet_up_pref", "")
+            return if(temp != null)
+                temp
+            else
+                "Maison/test"
+
+        }
+        set(value) = prefs.edit().putString("topic_volet_up_pref", value).apply()
+
+    var topicVoletDown: String
+        get(){
+            val temp = prefs.getString("topic_volet_down_pref", "")
+            return if(temp != null)
+                temp
+            else
+                "Maison/test"
+
+        }
+        set(value) = prefs.edit().putString("topic_volet_down_pref", value).apply()
+
     var usernameBroker: String
         get(){
             val temp = prefs.getString("user_name_pref", "")

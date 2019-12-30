@@ -11,6 +11,9 @@
         <item
             android:id="@+id/nav_portail"
             android:title="Portail"/>
+        <item
+            android:title="Volet"
+            android:id="@+id/nav_volet"/>
     </group>
 
 </menu>

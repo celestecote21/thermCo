@@ -52,7 +52,8 @@ Pour activer rapidement la clim ou le chauffage pour 2 heures il suffit de faire
     <string name="topic_portail_title">Topic du portail</string>
     <string name="user_name_title">user name pour le broker</string>
     <string name="password_title">Mot de passe pour le broker</string>
-
+    <string name="topic_volet_down_title">Topic du Volet pour le descendre</string>
+    <string name="topic_volet_up_title">Topic du Volet pour le monter</string>
 
 
 </resources>

@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.celeste.thermco.Services.ContactServ
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         super.onCreate(savedInstanceState)
-
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         val pref = Pref(this)
         println(hour)
 
@@ -268,6 +269,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
                     startActivity(portailIntent)}
+                catch (ex: Exception){
+                    Toast.makeText(this, "merci de renseigner un bon mot de passe et user pour le broker", Toast.LENGTH_LONG).show()
+                }
+            }
+            R.id.nav_volet -> {
+                try{
+                    val voletIntent = Intent(this, VoletActivity::class.java)
+
+
+                    startActivity(voletIntent)}
                 catch (ex: Exception){
                     Toast.makeText(this, "merci de renseigner un bon mot de passe et user pour le broker", Toast.LENGTH_LONG).show()
                 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:dist="http://schemas.android.com/apk/distribution"
+        xmlns:tools="http://schemas.android.com/tools"
         package="com.celeste.thermco">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,8 +16,10 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            android:usesCleartextTraffic="true">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:usesCleartextTraffic="true"
+            tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".VoletActivity"></activity>
         <activity
                 android:name=".SettingsActivity"
                 android:label="@string/title_activity_settings"
@@ -42,7 +45,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="org.eclipse.paho.android.service.MqttService"></service>
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 
 </manifest>

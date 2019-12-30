@@ -10,9 +10,10 @@ import com.celeste.thermco.Services.MQTTmanager
 import com.celeste.thermco.UIinterface.UIUpdaterInterface
 import com.celeste.thermco.Utilities.Pref
 import kotlinx.android.synthetic.main.activity_portail.*
+import kotlinx.android.synthetic.main.activity_volet.*
 import java.lang.Exception
 
-class portailActivity : AppCompatActivity(), UIUpdaterInterface {
+class VoletActivity : AppCompatActivity(), UIUpdaterInterface {
 
 
     private var mqttManager: MQTTmanager? = null
@@ -24,8 +25,18 @@ class portailActivity : AppCompatActivity(), UIUpdaterInterface {
     }
 
     override fun update(message: String, topic: String?) {
-        println("un message $message")
-        button_portail.text = message
+        if(message == "1") {
+            if(topic == "Maison/volet/up")
+                button_up.setBackgroundResource(R.drawable.button_activ)
+            else if(topic == "Maison/volet/down")
+                button_down.setBackgroundResource(R.drawable.button_activ)
+
+        }else{
+            if(topic == "Maison/volet/up")
+                button_up.setBackgroundResource(R.drawable.button_check)
+            else if(topic == "Maison/volet/down")
+                button_down.setBackgroundResource(R.drawable.button_check)
+        }
     }
 
     override fun updateStatusViewWith(status: String) {
@@ -35,18 +46,18 @@ class portailActivity : AppCompatActivity(), UIUpdaterInterface {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-        setContentView(R.layout.activity_portail)
+        setContentView(R.layout.activity_volet)
         val prefs = Pref(this)
         try {
 
 
             mqttAddressServeur = prefs.serveurMqtt
-            println(mqttAddressServeur)
+
 
             val mqttConnectioParams = MQTTConnectionParams(
                 "telephoneAndroid",
                 "tcp://$mqttAddressServeur:1883",
-                prefs.topicPortail,
+                prefs.topicVoletUp,
                 prefs.usernameBroker,
                 prefs.password
             )
@@ -56,7 +67,8 @@ class portailActivity : AppCompatActivity(), UIUpdaterInterface {
 
             mqttManager?.connect() { connected ->
                 if (connected) {
-                    mqttManager?.subscribe(prefs.topicPortail)
+                    mqttManager?.subscribe(prefs.topicVoletUp)
+                    mqttManager?.subscribe(prefs.topicVoletDown)
                 }
             }
         }catch (ex: Exception){
@@ -64,9 +76,13 @@ class portailActivity : AppCompatActivity(), UIUpdaterInterface {
             onBackPressed()
         }
 
-        button_portail.setOnClickListener{
-            mqttManager?.publish("1", prefs.topicPortail)
+        button_up.setOnClickListener{
+            mqttManager?.publish("1", prefs.topicVoletUp)
+        }
+        button_down.setOnClickListener{
+            mqttManager?.publish("1", prefs.topicVoletDown)
         }
 
     }
 }
+
