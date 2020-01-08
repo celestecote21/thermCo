@@ -36,8 +36,19 @@ class Pref(contex: Context){
 
     var lastChaleur: Int
         get() = prefs.getInt(CHALEUR_PREF, 1)
-        set(value: Int) = prefs.edit().putInt(CHALEUR_PREF, value).apply()
+        set(value) = prefs.edit().putInt(CHALEUR_PREF, value).apply()
 
+    var defaultTempGeo: Float
+        get() {
+            val temp = prefs.getString("temperature_base_geothermie_pref", "15")
+            return if(temp != null)
+                        temp.toFloat()
+                    else
+                        15.toFloat()
+        }
+        set(value) {
+            prefs.edit().putString("temperature_base_geothermie_pref", value.toString()).apply()
+        }
 
     var serveurMqtt: String
         get() {
@@ -61,27 +72,41 @@ class Pref(contex: Context){
         }
         set(value) = prefs.edit().putString("topic_portail_pref", value).apply()
 
-    var topicVoletUp: String
+    var topicVolet: String
         get(){
-            val temp = prefs.getString("topic_volet_up_pref", "")
+            val temp = prefs.getString("topic_volet_pref", "")
             return if(temp != null)
                 temp
             else
                 "Maison/test"
 
         }
-        set(value) = prefs.edit().putString("topic_volet_up_pref", value).apply()
+        set(value) = prefs.edit().putString("topic_volet_pref", value).apply()
 
-    var topicVoletDown: String
+
+    var topicThermostatSet: String
         get(){
-            val temp = prefs.getString("topic_volet_down_pref", "")
+            val temp = prefs.getString("topic_thermostat_set_pref", "")
             return if(temp != null)
                 temp
             else
                 "Maison/test"
 
         }
-        set(value) = prefs.edit().putString("topic_volet_down_pref", value).apply()
+        set(value) = prefs.edit().putString("topic_thermostat_set_pref", value).apply()
+
+    var topicThermostatGet: String
+        get(){
+            val temp = prefs.getString("topic_thermostat_get_pref", "")
+            return if(temp != null)
+                temp
+            else
+                "Maison/test"
+
+        }
+        set(value) = prefs.edit().putString("topic_thermostat_get_pref", value).apply()
+
+
 
     var usernameBroker: String
         get(){

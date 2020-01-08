@@ -10,7 +10,6 @@ import org.eclipse.paho.android.service.MqttAndroidClient
 class MQTTmanager(val connectionParms:MQTTConnectionParams, val context: Context, var uiUpdater: UIUpdaterInterface){
     private val client = MqttAndroidClient(context, connectionParms.host, connectionParms.clientId)
 
-    public var lastMessage = ""
 
     init {
         client.setCallback(object: MqttCallbackExtended {
@@ -45,8 +44,7 @@ class MQTTmanager(val connectionParms:MQTTConnectionParams, val context: Context
         mqttConnectOptions.userName = this.connectionParms.username
 
         try {
-            val params = this.connectionParms
-            val connect = client.connect(mqttConnectOptions, context, object : IMqttActionListener {
+            client.connect(mqttConnectOptions, context, object : IMqttActionListener {
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
                     Log.w("connection", "no connection")
                     Log.w("mqtt", exception.toString())
@@ -92,20 +90,23 @@ class MQTTmanager(val connectionParms:MQTTConnectionParams, val context: Context
             ex.printStackTrace()
         }
     }
+
+
     fun publish(message: String, topic: String){
         try {
             client.publish(topic, message.toByteArray(), 0, false, null, object: IMqttActionListener{
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.w("mqtt", "the message is delivered on the topic")
+                    uiUpdater.mqttError("no", true)
                 }
 
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
-                    Log.w("mqtt", "enable to delivered the message")
+                    Log.w("mqtt", "not delivered the message")
+                    uiUpdater.mqttError(exception.toString(), false)
                 }
             })
         }catch (ex:MqttException){
             ex.printStackTrace()
-
         }
     }
 
@@ -142,14 +143,17 @@ class MQTTmanager(val connectionParms:MQTTConnectionParams, val context: Context
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
                     Log.w("mqtt", "uneable to unsubscribe")
                 }
-
             })
         }
         catch (ex:MqttException) {
             System.err.println("Exception unsubscribe")
             ex.printStackTrace()
         }
+    }
 
+
+    fun isConnected():Boolean{
+        return client.isConnected
     }
 
 }

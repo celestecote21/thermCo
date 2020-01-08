@@ -30,27 +30,6 @@
             app:title="@string/serveur_mqtt_title"
             app:useSimpleSummaryProvider="true" />
 
-
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/paramettre_header">
-
-        <EditTextPreference
-                app:key="topic_portail_pref"
-                app:title="@string/topic_portail_title"
-                app:useSimpleSummaryProvider="true" />
-        <EditTextPreference
-                app:key="topic_volet_up_pref"
-                app:title="@string/topic_volet_up_title"
-                app:useSimpleSummaryProvider="true" />
-        <EditTextPreference
-                app:key="topic_volet_down_pref"
-                app:title="@string/topic_volet_down_title"
-                app:useSimpleSummaryProvider="true" />
-
-
-
-
         <EditTextPreference
                 app:key="user_name_pref"
                 app:title="@string/user_name_title"
@@ -61,7 +40,41 @@
                 app:useSimpleSummaryProvider="true" />
 
 
-
     </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/parametre_thermostat_header">
+
+        <EditTextPreference
+                app:key="temperature_base_geothermie_pref"
+                app:title="@string/temperature_base_geothermie_title"
+                app:useSimpleSummaryProvider="true"
+            />
+        <EditTextPreference
+                app:key="topic_thermostat_get_pref"
+                app:title="@string/topic_thermostat_get_title"
+                app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+                app:key="topic_thermostat_set_pref"
+                app:title="@string/topic_thermostat_set_title"
+                app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/parametre_portail_header">
+
+        <EditTextPreference
+                app:key="topic_portail_pref"
+                app:title="@string/topic_portail_title"
+                app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/parametre_volet_header">
+
+        <EditTextPreference
+                app:key="topic_volet_pref"
+                app:title="@string/topic_volet_title"
+                app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+
+
 
 </PreferenceScreen>

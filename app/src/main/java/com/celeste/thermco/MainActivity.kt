@@ -1,7 +1,10 @@
 package com.celeste.thermco
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Color.BLACK
 import android.os.Bundle
 
 import androidx.core.view.GravityCompat
@@ -16,6 +19,9 @@ import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.celeste.thermco.Services.ContactServ
+import com.celeste.thermco.Services.MQTTConnectionParams
+import com.celeste.thermco.Services.MQTTmanager
+import com.celeste.thermco.UIinterface.UIUpdaterInterface
 import com.celeste.thermco.Utilities.EXTRA_SELECTOR
 import com.celeste.thermco.Utilities.Pref
 import com.celeste.thermco.models.Chauffage
@@ -23,10 +29,14 @@ import kotlinx.android.synthetic.main.content_main.*
 import java.lang.Exception
 import java.util.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, UIUpdaterInterface{
 
 
     private var adresseServer :String = ""
+    private var mqttManager: MQTTmanager? = null
+
+    private var lastMessage: String = ""
+
     private val calendar = GregorianCalendar()
     private var hour = calendar.get(Calendar.HOUR_OF_DAY)
 
@@ -46,10 +56,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if(pref.isTheFirstLogging){
             val builderFL = AlertDialog.Builder(this)
             builderFL.setView(R.layout.first_login_layout)
-            builderFL.setPositiveButton("ok"){ p1, p2 ->
+            builderFL.setPositiveButton("ok"){ _, _ ->
                 pref.isTheFirstLogging = false
             }
-            builderFL.setNegativeButton("revoir"){p1, p2 ->
+            builderFL.setNegativeButton("revoir"){ _, _ ->
 
             }
             builderFL.create().show()
@@ -58,8 +68,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-        var temperature: Float = 0.toFloat()
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -70,13 +78,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
 
+
+        try {
+            val mqttAddressServeur = pref.serveurMqtt
+
+            val mqttConnectioParams = MQTTConnectionParams(
+                "telephoneAndroid",
+                "tcp://$mqttAddressServeur:1883",
+                pref.topicThermostatGet,
+                pref.usernameBroker,
+                pref.password
+            )
+            mqttManager = MQTTmanager(mqttConnectioParams, applicationContext, this)
+
+            mqttManager?.connect() { connected ->
+                if (connected) {
+                    mqttManager?.subscribe(pref.topicThermostatGet)
+                }
+            }
+        }catch (ex: Exception){
+            Toast.makeText(this, "verifier l'addresse, l'user name et le password", Toast.LENGTH_LONG).show()
+            val settingIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(settingIntent)
+        }
         adresseServer = pref.adresseServeur
 
-
-
-        ContactServ.receiveTemperature(adresseServer, this){ ok:Boolean, temp:Float ->
-                changementDeTemperature(ok, temp)
-        }
 
 
         navView.setNavigationItemSelectedListener(this)
@@ -84,7 +110,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val selectorIntent = Intent(this, DefineT::class.java)
             selectorIntent.putExtra(EXTRA_SELECTOR, 1)
 
-            startActivity(selectorIntent)
+            startActivityForResult(selectorIntent, 12)
         }
 
         geo_main_btn.setOnLongClickListener {
@@ -101,39 +127,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 //true
                 dow - 2 == i
             }
+            val temporaire = Chauffage(pref.lastChaleur, day, pref.lastGeoTemp ,hour,2, 1, pref.defaultTempGeo)
+            mqttManager?.publish(temporaire.toJSON().toString(), pref.topicThermostatSet)
 
-            val temporaire = Chauffage(pref.lastChaleur, day, pref.lastGeoTemp ,hour,2, 1)
-            val builder = AlertDialog.Builder(this)
-
-
-            ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
-                if(ok){
-
-                    builder.setTitle("chauffage mis")
-                    builder.setMessage("la geothermie est mise a ${pref.lastGeoTemp} degres pour 2h")
-                    builder.setPositiveButton("OK"){dialog, with ->
-
-                    }
-
-
-                }else{
-                    builder.setTitle("Erreur")
-                    builder.setMessage("le serveur n'est pas accessible")
-                    builder.setPositiveButton("OK"){dialog, with ->
-
-                    }
-                }
-                builder.create().show()
-
-            }
-            true
+            lastMessage = "la geothermie est mise a ${pref.lastGeoTemp} degres pour 2h"
+             true
         }
 
         clim_main_btn.setOnClickListener {
             val selectorIntent = Intent(this, DefineT::class.java)
             selectorIntent.putExtra(EXTRA_SELECTOR, 2)
 
-            startActivity(selectorIntent)
+            startActivityForResult(selectorIntent, 12)
         }
 
 
@@ -152,59 +157,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dow - 2 == i
             }
 
-            val temporaire = Chauffage(pref.lastChaleur, day, pref.lastClimTemp ,hour,2, 2)
-            val builder = AlertDialog.Builder(this)
+            val temporaire = Chauffage(pref.lastChaleur, day, pref.lastClimTemp ,hour,2, 2, pref.defaultTempGeo)
 
-            ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
-                if(ok){
-                    builder.setTitle("clim mis")
-                    builder.setMessage("la clim est mise a ${pref.lastClimTemp} degres pour 2h")
-                    builder.setPositiveButton("OK"){dialog, with ->
+            mqttManager?.publish(temporaire.toJSON().toString(), pref.topicThermostatSet)
+            lastMessage = "la clim est mise a ${pref.lastClimTemp} degres pour 2h"
 
-                    }
-
-
-                }else{
-                    println(temporaire.toJSON())
-                    builder.setTitle("Erreur")
-                    builder.setMessage("le serveur n'est pas accessible")
-                    builder.setPositiveButton("OK"){dialog, with ->
-
-                    }
-                }
-                builder.create().show()
-
-            }
             true
         }
 
 
         arret_main_btn.setOnClickListener {
-            val day = Array(7){ i -> false}
-            val temporaire = Chauffage(1, day,0.toFloat(),0,0, 1)
-            val builder = AlertDialog.Builder(this)
+            //val day = Array(7){ i -> false}
+            //val temporaire = Chauffage(1, day,0.toFloat(),0,0, 1, pref.defaultTempGeo)
 
-            ContactServ.sendToServer(adresseServer, this, temporaire.toJSON()){ ok ->
-                if(ok){
+            mqttManager?.publish("arret", pref.topicThermostatSet)
+            lastMessage = "l'arret a ete envoyer"
 
-                    builder.setTitle("Envoyer")
-                    builder.setMessage("Les donnees ont bien ete envoye")
-                    builder.setPositiveButton("OK"){dialog, with ->
-
-                    }
-
-
-                }else{
-                    builder.setTitle("Erreur")
-                    builder.setMessage("Rien ce c'est arrete")
-                    builder.setPositiveButton("OK"){dialog, with ->
-
-                    }
-                }
-                val dialog = builder.create()
-                dialog.show()
-
-            }
 
             Toast.makeText(this,"arret de tout", Toast.LENGTH_LONG).show()
         }
@@ -213,13 +181,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onResume() {
         super.onResume()
 
-        ContactServ.receiveTemperature(adresseServer, this) { ok: Boolean, temp: Float ->
-            changementDeTemperature(ok, temp)
-        }
         hour = calendar.get(Calendar.HOUR_OF_DAY)
 
+        if(mqttManager?.isConnected() != true){
+            mqttManager?.connect { okai ->
+                if(okai)
+                    mqttManager?.subscribe(Pref(this).topicThermostatGet)
+            }
+        }else{
+            mqttManager?.subscribe(Pref(this).topicThermostatGet)
+        }
 
+    }
 
+    override fun onPause() {
+        super.onPause()
+        mqttManager?.unsubscribe(Pref(this).topicThermostatGet)
     }
 
     override fun onBackPressed() {
@@ -290,37 +267,59 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    private fun changementDeTemperature(good: Boolean, temperature: Float) {
-        if (good) {
-            temperature_main_txt.text = temperature.toString()
-            if (temperature < 10) {
-                layout_de_base_main.setBackgroundColor(Color.BLACK)
-                geo_main_btn.setTextColor(Color.WHITE)
-                clim_main_btn.setTextColor(Color.WHITE)
-                arret_main_btn.setTextColor(Color.WHITE)
-                temperature_main_txt.setTextColor(Color.WHITE)
-                ilFait_txt.setTextColor(Color.WHITE)
-            } else if (temperature >= 10 && temperature < 23) {
-                layout_de_base_main.setBackgroundColor(Color.parseColor("#FF3673B9"))
-            } else {
-                layout_de_base_main.setBackgroundColor(Color.RED)
-            }
-        } else {
-            Toast.makeText(this, "serveur pas accessible", Toast.LENGTH_LONG).show()
 
-            temperature_main_txt.text = 0.toString()
-            if (temperature < 10) {
-                layout_de_base_main.setBackgroundColor(Color.BLACK)
-                geo_main_btn.setTextColor(Color.WHITE)
-                clim_main_btn.setTextColor(Color.WHITE)
-                arret_main_btn.setTextColor(Color.WHITE)
-                temperature_main_txt.setTextColor(Color.WHITE)
-                ilFait_txt.setTextColor(Color.WHITE)
-            } else if (temperature >= 10 && temperature < 23) {
-                layout_de_base_main.setBackgroundColor(Color.parseColor("#FF3673B9"))
-            } else {
-                layout_de_base_main.setBackgroundColor(Color.RED)
+
+    override fun update(message: String, topic: String?) {
+        temperature_main_txt.text = message
+        val temperature = try {
+            message.toFloat()
+        }catch (ex:Exception){
+            0.toFloat()
+        }
+        geo_main_btn.setTextColor(BLACK)
+        clim_main_btn.setTextColor(BLACK)
+        arret_main_btn.setTextColor(BLACK)
+        temperature_main_txt.setTextColor(BLACK)
+        ilFait_txt.setTextColor(BLACK)
+        if (temperature < 10) {
+            layout_de_base_main.setBackgroundColor(BLACK)
+            geo_main_btn.setTextColor(Color.WHITE)
+            clim_main_btn.setTextColor(Color.WHITE)
+            arret_main_btn.setTextColor(Color.WHITE)
+            temperature_main_txt.setTextColor(Color.WHITE)
+            ilFait_txt.setTextColor(Color.WHITE)
+        } else if (temperature >= 10 && temperature < 23) {
+            layout_de_base_main.setBackgroundColor(Color.parseColor("#FF3673B9"))
+        } else {
+            layout_de_base_main.setBackgroundColor(Color.RED)
+        }
+    }
+
+    override fun mqttError(error: String, complete: Boolean) {
+        val builder = AlertDialog.Builder(this)
+        if(complete) {
+            builder.setTitle("donnees envoye")
+            builder.setMessage(lastMessage)
+            builder.setPositiveButton("OK") { _, _ -> }
+            builder.create().show()
+        }else{
+            builder.setTitle("erreur dans l'envoi")
+            builder.setMessage("merci de verifier la connection")
+            builder.setPositiveButton("OK") { _, _ -> }
+            builder.create().show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 12 && resultCode == Activity.RESULT_OK) {
+            val message = data?.getStringExtra("extra_result")
+            val topic = data?.getStringExtra("extra_topic")// pour eviter une instance des preferences
+            if(message != null && topic != null){
+                lastMessage = "donne envoyer"
+                mqttManager?.publish(message, topic)
             }
+
         }
     }
 }

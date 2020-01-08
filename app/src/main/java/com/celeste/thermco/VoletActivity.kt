@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.widget.Toast
-import androidx.preference.PreferenceManager
+import androidx.appcompat.app.AlertDialog
 import com.celeste.thermco.Services.MQTTConnectionParams
 import com.celeste.thermco.Services.MQTTmanager
 import com.celeste.thermco.UIinterface.UIUpdaterInterface
 import com.celeste.thermco.Utilities.Pref
-import kotlinx.android.synthetic.main.activity_portail.*
 import kotlinx.android.synthetic.main.activity_volet.*
 import java.lang.Exception
 
@@ -19,29 +18,28 @@ class VoletActivity : AppCompatActivity(), UIUpdaterInterface {
     private var mqttManager: MQTTmanager? = null
     private var mqttAddressServeur: String? = null
 
-
-    override fun resetUIWithConnection(status: Boolean) {
-
-    }
-
     override fun update(message: String, topic: String?) {
-        if(message == "1") {
-            if(topic == "Maison/volet/up")
-                button_up.setBackgroundResource(R.drawable.button_activ)
-            else if(topic == "Maison/volet/down")
-                button_down.setBackgroundResource(R.drawable.button_activ)
-
-        }else{
-            if(topic == "Maison/volet/up")
+        if(message == "OK") {
                 button_up.setBackgroundResource(R.drawable.button_check)
-            else if(topic == "Maison/volet/down")
                 button_down.setBackgroundResource(R.drawable.button_check)
+        }else{
+            if(message == "up")
+                button_up.setBackgroundResource(R.drawable.button_activ)
+            else if(message == "down")
+                button_down.setBackgroundResource(R.drawable.button_activ)
         }
     }
 
-    override fun updateStatusViewWith(status: String) {
-
+    override fun mqttError(error: String, complete: Boolean) {
+        val builder = AlertDialog.Builder(this)
+        if(!complete) {
+            builder.setTitle("erreur dans l'envoi")
+            builder.setMessage("merci de verifier la connection")
+            builder.setPositiveButton("OK") { _, _ -> }
+            builder.create().show()
+        }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -57,7 +55,7 @@ class VoletActivity : AppCompatActivity(), UIUpdaterInterface {
             val mqttConnectioParams = MQTTConnectionParams(
                 "telephoneAndroid",
                 "tcp://$mqttAddressServeur:1883",
-                prefs.topicVoletUp,
+                prefs.topicVolet,
                 prefs.usernameBroker,
                 prefs.password
             )
@@ -67,8 +65,7 @@ class VoletActivity : AppCompatActivity(), UIUpdaterInterface {
 
             mqttManager?.connect() { connected ->
                 if (connected) {
-                    mqttManager?.subscribe(prefs.topicVoletUp)
-                    mqttManager?.subscribe(prefs.topicVoletDown)
+                    mqttManager?.subscribe(prefs.topicVolet)
                 }
             }
         }catch (ex: Exception){
@@ -77,10 +74,10 @@ class VoletActivity : AppCompatActivity(), UIUpdaterInterface {
         }
 
         button_up.setOnClickListener{
-            mqttManager?.publish("1", prefs.topicVoletUp)
+            mqttManager?.publish("up", prefs.topicVolet)
         }
         button_down.setOnClickListener{
-            mqttManager?.publish("1", prefs.topicVoletDown)
+            mqttManager?.publish("down", prefs.topicVolet)
         }
 
     }
