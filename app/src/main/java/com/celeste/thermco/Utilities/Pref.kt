@@ -95,6 +95,16 @@ class Pref(contex: Context){
         }
         set(value) = prefs.edit().putString("topic_thermostat_set_pref", value).apply()
 
+    var topicThermostatStatus: String
+        get(){
+            val temp = prefs.getString("topic_thermostat_status_pref", "")
+            return if(temp != null)
+                temp
+            else
+                "Maison/test"
+        }
+        set(value) = prefs.edit().putString("topic_thermostat_status_pref", value).apply()
+
     var topicThermostatGet: String
         get(){
             val temp = prefs.getString("topic_thermostat_get_pref", "")

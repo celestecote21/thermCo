@@ -52,11 +52,12 @@ class Chauffage(
             i++
         }
 
-        weekJSON.put("hours", hourStr)
+        weekJSON.put("start", startTime)
+        weekJSON.put("finish", startTime + duree)
+        weekJSON.put("set", temperature);
+        //weekJSON.put("hours", hourStr)
         weekJSON.put("type", choix) // si c'est la geo ou la clim
-        if(choix == 1){
-            weekJSON.put("default", tempBaseGeo.toString())
-        }
+        weekJSON.put("default", tempBaseGeo.toString())
         println(weekJSON.toString())
 
 

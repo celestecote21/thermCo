@@ -57,6 +57,10 @@
                 app:key="topic_thermostat_set_pref"
                 app:title="@string/topic_thermostat_set_title"
                 app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+                app:key="topic_thermostat_status_pref"
+                app:title="@string/topic_thermostat_status_title"
+                app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/parametre_portail_header">

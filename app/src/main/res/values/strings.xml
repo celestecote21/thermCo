@@ -54,6 +54,7 @@ Pour activer rapidement la clim ou le chauffage pour 2 heures il suffit de faire
 
     <!-- paramettre Preferences -->
     <string name="topic_portail_title">Topic du portail</string>
+    <string name="topic_thermostat_status_title">Topic du status Thermostat</string>
     <string name="temperature_base_geothermie_title">Temperature de base geo</string>
     <string name="topic_volet_title">Topic du Volet </string>
     <string name="topic_thermostat_get_title">Topic de la temperature de la maison</string>

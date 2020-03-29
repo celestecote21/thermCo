@@ -24,8 +24,10 @@ import com.celeste.thermco.Services.MQTTmanager
 import com.celeste.thermco.UIinterface.UIUpdaterInterface
 import com.celeste.thermco.Utilities.EXTRA_SELECTOR
 import com.celeste.thermco.Utilities.Pref
+import com.celeste.thermco.Utilities.Status
 import com.celeste.thermco.models.Chauffage
 import kotlinx.android.synthetic.main.content_main.*
+import org.json.JSONObject
 import java.lang.Exception
 import java.util.*
 
@@ -93,7 +95,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             mqttManager?.connect() { connected ->
                 if (connected) {
-                    mqttManager?.subscribe(pref.topicThermostatGet)
+                    mqttManager?.subscribe(pref.topicThermostatGet) // abonnemenet pour avoir la tempertaure
+                    mqttManager?.subscribe(pref.topicThermostatStatus) // aboonnement au topic du status du thermostat
+                    mqttManager?.publish("Ok", pref.topicThermostatStatus) // envoie d'une petit message pour avoir un retour sur le stats
                 }
             }
         }catch (ex: Exception){
@@ -114,8 +118,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         geo_main_btn.setOnLongClickListener {
-            //val date = LocalDate.now()
-            //val dow = date.dayOfWeek
+
             var dow = calendar.get(Calendar.DAY_OF_WEEK)
 
             println(dow)
@@ -180,23 +183,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
-
+        var error_co = false
         hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val prefs = Pref(this)
 
         if(mqttManager?.isConnected() != true){
             mqttManager?.connect { okai ->
-                if(okai)
-                    mqttManager?.subscribe(Pref(this).topicThermostatGet)
+                if(okai) {
+                    mqttManager?.subscribe("Maison/thermostat/get")
+                    mqttManager?.subscribe(Pref(this).topicThermostatStatus)
+                    mqttManager?.publish("ok", Pref(this).topicThermostatStatus)
+                }
             }
         }else{
-            mqttManager?.subscribe(Pref(this).topicThermostatGet)
+            mqttManager?.subscribe("Maison/thermostat/get")
+            mqttManager?.subscribe(Pref(this).topicThermostatStatus)
+            mqttManager?.publish("ok", Pref(this).topicThermostatStatus)
         }
-
     }
 
     override fun onPause() {
         super.onPause()
         mqttManager?.unsubscribe(Pref(this).topicThermostatGet)
+        mqttManager?.subscribe(Pref(this).topicThermostatStatus)
     }
 
     override fun onBackPressed() {
@@ -270,6 +279,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun update(message: String, topic: String?) {
+        if(topic != null){
+            println(topic)
+            if(topic == Pref(this).topicThermostatStatus){
+                updateStatusBar(message)
+                return
+            }
+        }
         temperature_main_txt.text = message
         val temperature = try {
             message.toFloat()
@@ -295,6 +311,43 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    fun updateStatusBar(message: String){
+        val json = JSONObject(message)
+        try {
+            ///__________________________GEO______________________//
+            if(json.getInt("geo_arret") == 1){
+                status_geo_main.text = "arret"
+            }else{
+                val statusObj = Status(
+                    json.getInt("geo_start"),
+                    json.getInt("geo_stop"),
+                    json.getInt("geo_day"),
+                    json.getDouble("geo_set").toFloat()
+                )
+                val temp = statusObj.toString() + resources.getStringArray(R.array.planets_array)[json.getInt("geo_day")]
+                status_geo_main.text = temp
+            }
+
+            //___________________________CLIM_______________________//
+            if(json.getInt("clim_arret") == 1){
+                status_clim_main.text = "arret"
+            }else{
+                val statusObj = Status(
+                    json.getInt("clim_start"),
+                    json.getInt("clim_stop"),
+                    json.getInt("clim_day"),
+                    json.getDouble("clim_set").toFloat()
+                )
+                val temp = statusObj.toString() + resources.getStringArray(R.array.planets_array)[json.getInt("clim_day")]
+                status_clim_main.text = temp
+            }
+
+        }catch (eo: Exception){
+            println(eo.toString())
+        }
+
+    }
+
     override fun mqttError(error: String, complete: Boolean) {
         val builder = AlertDialog.Builder(this)
         if(complete) {
@@ -318,6 +371,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if(message != null && topic != null){
                 lastMessage = "donne envoyer"
                 mqttManager?.publish(message, topic)
+                Toast.makeText(this, "envoi ok", Toast.LENGTH_SHORT).show()
             }
 
         }

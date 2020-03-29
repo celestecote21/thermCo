@@ -97,7 +97,8 @@ class MQTTmanager(val connectionParms:MQTTConnectionParams, val context: Context
             client.publish(topic, message.toByteArray(), 0, false, null, object: IMqttActionListener{
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.w("mqtt", "the message is delivered on the topic")
-                    uiUpdater.mqttError("no", true)
+                    if(message != "ok") // que ca mette pas un dialogue pour le status
+                        uiUpdater.mqttError("no", true)
                 }
 
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
