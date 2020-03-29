@@ -8,7 +8,6 @@
     <string name="action_settings">Settings</string>
 
 
-
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
@@ -32,9 +31,34 @@
 Cliquer sur le bouton clim ou geo vous pourrez ainsi programmer les horaires d'activation et la temperature.\n Ne rentrez seulememt l'heure sans les minutes pour les deux premiers fields, pour la temperature il est possible d'entrer un nombre a virgule
 Pour activer rapidement la clim ou le chauffage pour 2 heures il suffit de faire un appui long sur celui que vous voulez. La temperature sera la dernier que vous avez definie"
     </string>
+
     <string name="thermco">thermco</string>
-    <string name="adress_du_salon">adress du salon</string>
+    <string name="adress_du_salon">address du salon</string>
     <string name="save">save</string>
+
+
+    <string name="title_activity_settings">Settings</string>
+
+
+    <!-- Preference Titles -->
+    <string name="server_header">Serveur</string>
+    <string name="parametre_thermostat_header">Parametres thermostat</string>
+    <string name="parametre_volet_header">Parametres volet </string>
+    <string name="parametre_portail_header">Parametre portail</string>
+
+    <!-- Serveur Preferences -->
+    <string name="serveur_thermostat_title">addresse ip du thermostat</string>
+    <string name="serveur_mqtt_title">Adresse IP du broker mqtt</string>
+    <string name="user_name_title">user name pour le broker</string>
+    <string name="password_title">Mot de passe pour le broker</string>
+
+    <!-- paramettre Preferences -->
+    <string name="topic_portail_title">Topic du portail</string>
+    <string name="topic_thermostat_status_title">Topic du status Thermostat</string>
+    <string name="temperature_base_geothermie_title">Temperature de base geo</string>
+    <string name="topic_volet_title">Topic du Volet </string>
+    <string name="topic_thermostat_get_title">Topic de la temperature de la maison</string>
+    <string name="topic_thermostat_set_title">Topic pour l\'enoie des donnees au thermostat</string>
 
 
 </resources>

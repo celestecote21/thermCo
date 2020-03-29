@@ -1,8 +1,19 @@
 package com.celeste.thermco.models
 
+import android.content.Context
+import com.celeste.thermco.Utilities.Pref
 import org.json.JSONObject
 //______________FROID / CHAUD____JOUR ACTIVER____________TEMPERATURE ____________HEURE DEPART_______DUREE________GEO / CLIM
-class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Float, var startTime: Int, var duree: Int, val choix: Int){
+
+class Chauffage(
+    var type: Int,
+    var day: Array<Boolean>,
+    var temperature: Float,
+    var startTime: Int,
+    var duree: Int,
+    val choix: Int,
+    val tempBaseGeo: Float
+){
 
 
     fun toJSON(): JSONObject{
@@ -33,7 +44,7 @@ class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Float, 
 
         val weekJSON = JSONObject()
 
-        var i = 0;
+        var i = 0
         for(d in day ){
             if(d){
                 weekJSON.put("day", i)
@@ -41,9 +52,12 @@ class Chauffage(var type: Int, var day: Array<Boolean>, var temperature: Float, 
             i++
         }
 
-        weekJSON.put("hours", hourStr)
+        weekJSON.put("start", startTime)
+        weekJSON.put("finish", startTime + duree)
+        weekJSON.put("set", temperature);
+        //weekJSON.put("hours", hourStr)
         weekJSON.put("type", choix) // si c'est la geo ou la clim
-
+        weekJSON.put("default", tempBaseGeo.toString())
         println(weekJSON.toString())
 
 

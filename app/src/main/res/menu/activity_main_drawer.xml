@@ -2,12 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
       tools:showIn="navigation_view">
-
-    <group android:checkableBehavior="single">
+<!--    android:checkableBehavior="single"-->
+    <group >
         <item
                 android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_settings"
-                android:title="Setting"/>
+                android:title="Settings"/>
+        <item
+            android:id="@+id/nav_portail"
+            android:title="Portail"/>
+        <item
+            android:title="Volet"
+            android:id="@+id/nav_volet"/>
     </group>
 
 </menu>
