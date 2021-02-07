@@ -79,13 +79,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-
+        if (pref.usernameBroker.length <= 0 || pref.password.length <= 0) {
+            Toast.makeText(this, "verifier l'addresse, l'user name et le password", Toast.LENGTH_LONG).show()
+            val settingIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(settingIntent)
+        }
 
         try {
             val mqttAddressServeur = pref.serveurMqtt
 
             val mqttConnectioParams = MQTTConnectionParams(
-                "telephoneAndroid",
+                "telAndroid${pref.deviceName}",
                 "tcp://$mqttAddressServeur:1883",
                 pref.topicThermostatGet,
                 pref.usernameBroker,

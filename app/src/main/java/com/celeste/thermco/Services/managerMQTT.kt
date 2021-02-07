@@ -7,7 +7,7 @@ import com.celeste.thermco.UIinterface.UIUpdaterInterface
 import org.eclipse.paho.client.mqttv3.*
 import org.eclipse.paho.android.service.MqttAndroidClient
 
-class MQTTmanager(val connectionParms:MQTTConnectionParams, val context: Context, var uiUpdater: UIUpdaterInterface){
+class MQTTmanager(val connectionParms: MQTTConnectionParams, val context: Context, var uiUpdater: UIUpdaterInterface){
     private val client = MqttAndroidClient(context, connectionParms.host, connectionParms.clientId)
 
 
@@ -37,7 +37,7 @@ class MQTTmanager(val connectionParms:MQTTConnectionParams, val context: Context
 
     fun connect(complet:(Boolean) -> Unit){
         val mqttConnectOptions = MqttConnectOptions()
-
+        
         mqttConnectOptions.isAutomaticReconnect = true
         mqttConnectOptions.isCleanSession = false
         mqttConnectOptions.password = this.connectionParms.password.toCharArray()

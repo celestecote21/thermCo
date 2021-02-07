@@ -140,4 +140,14 @@ class Pref(contex: Context){
         }
         set(value) = prefs.edit().putString("password_pref", value).apply()
 
+    var deviceName: String
+        get(){
+            val temp = prefs.getString("device_name", "1234")
+            return if(temp != null)
+                temp
+            else
+                "1234"
+
+        }
+        set(value) = prefs.edit().putString("device_name", value).apply()
 }

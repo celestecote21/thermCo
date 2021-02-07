@@ -51,6 +51,7 @@ Pour activer rapidement la clim ou le chauffage pour 2 heures il suffit de faire
     <string name="serveur_mqtt_title">Adresse IP du broker mqtt</string>
     <string name="user_name_title">user name pour le broker</string>
     <string name="password_title">Mot de passe pour le broker</string>
+    <string name="device_name">Le nom de votre telephone</string>
 
     <!-- paramettre Preferences -->
     <string name="topic_portail_title">Topic du portail</string>
